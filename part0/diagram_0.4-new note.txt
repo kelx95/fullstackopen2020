@@ -1,0 +1,38 @@
+
+title 0.4: new note
+note over browser:
+1-We type a note
+2-Click Save button
+3-The submit event of the form causes POST request to the /new_note endpoint
+end note
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/notes
+note over server:
+4-Form data-note: 'some text.." comes as request and is handled at /new_note endpoint,
+the note gets added to the array
+end note
+server-->browser: Server responds with HTTP 302 status code
+note over browser:
+5-HTTP 302 status code causes redirect to /notes endpoint
+end note
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
+server-->browser: HTML-code
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+server-->browser: main.js
+note over browser:
+6-Browser starts executing js-code from main.js
+that requests JSON data from server 
+end note
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+note over server:
+7-Server sends the notes as json
+(includes the note that we submitted)
+end note
+server-->browser: [{ content: "HTML is easy", date: "2019-05-23" }, ...]
+note over browser:
+8-Browser executes the event handler
+that renders notes to display
+end note
+
+
