@@ -6,6 +6,7 @@ const app = express()
 //middlewares
 app.use(cors())
 app.use(express.json())
+app.use(express.static('build'))
 morgan.token('body', function(req) {
     if (req.method !== 'POST') return ' ' 
     return JSON.stringify(req.body)
