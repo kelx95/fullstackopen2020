@@ -1,6 +1,5 @@
 const express = require('express')
 const morgan = require('morgan')
-
 //initialize express app
 const app = express()
 //middlewares
@@ -10,7 +9,6 @@ morgan.token('body', function(req) {
     return JSON.stringify(req.body)
   })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
-
 const persons = [{
         "name": "Arto Hellas",
         "number": "040-123456",
