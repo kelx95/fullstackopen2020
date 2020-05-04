@@ -8,8 +8,8 @@
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf build && cd ../phonebook-frontend && npm run build --prod && cp -r build cd ../phonebook-backend",
-    "deploy": "git subtree push ../phonebook-backend heroku master",
-    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && npm run deploy",
+    "deploy": "cd ../../../ && git subtree push --prefix part3/phonebook-fullstack/phonebook-backend heroku master && cd part3/phonebook-fullstack/phonebook-backend",
+    "deploy:full": "npm run build:ui && cd ../../../ && git add . && git commit -m uibuild && cd part3/phonebook-fullstack/phonebook-backend && npm run deploy",
     "logs:prod": "heroku logs -tail"
   },
   "keywords": [],
