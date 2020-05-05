@@ -26,6 +26,7 @@ const App = () => {
   }
   const handleClickSubmit = (event) => {
     const personIsFound = [...persons].find(person => person.name === newName);
+    console.log("found name object", personIsFound)
     if(personIsFound){
       if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one`)){
         console.log(personIsFound)
@@ -34,10 +35,11 @@ const App = () => {
           number: newNumber
         })
         .then(returnedPerson => {
-          console.log(returnedPerson);
+          console.log("update",returnedPerson);
          setPersons(persons.map(person => person.id !== returnedPerson.id 
           ? person 
           : returnedPerson))
+          console.log(persons)
           setColorNotification('greenNotification')
           setSuccessfulOperation(`The number of ${returnedPerson.name} is changed`)
           fiveSeconds()     
@@ -56,6 +58,7 @@ const App = () => {
         number: newNumber
       })
       .then(returnedPerson => {
+        console.log(returnedPerson)
         setPersons(persons.concat(returnedPerson))
         setColorNotification('greenNotification')
         setSuccessfulOperation(`Added ${returnedPerson.name}`)
