@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
-  const [successfulOperation, setSuccessfulOperation] = useState('')
+  const [operation, setOperation] = useState('')
   const [colorNotification, setColorNotification] = useState('')
 
   useEffect(()=>{
@@ -20,13 +20,13 @@ const App = () => {
   
   const fiveSeconds = () => {
     setTimeout(() => {
-      setSuccessfulOperation('')
+      setOperation('')
     }, 5000) 
   }
 
   const informationAlreadyRemovedFromServer = (name) => {
     setColorNotification('redNotification')
-    setSuccessfulOperation(`Information of ${name} has already been removed from server`)
+    setOperation(`Information of ${name} has already been removed from server`)
     fiveSeconds()
     personsService.getAll()
       .then(persons => setPersons(persons))
@@ -49,7 +49,7 @@ const App = () => {
           : returnedPerson))
           console.log(persons)
           setColorNotification('greenNotification')
-          setSuccessfulOperation(`The number of ${returnedPerson.name} is changed`)
+          setOperation(`The number of ${returnedPerson.name} is changed`)
           fiveSeconds()     
         })
         .catch(err => {
@@ -65,8 +65,15 @@ const App = () => {
         console.log(returnedPerson)
         setPersons(persons.concat(returnedPerson))
         setColorNotification('greenNotification')
-        setSuccessfulOperation(`Added ${returnedPerson.name}`)
+        setOperation(`Added ${returnedPerson.name}`)
         fiveSeconds()      
+      })
+      .catch(error => {
+        setColorNotification('redNotification')
+        //setOperation(`Information of ${name} has already been removed from server`)
+        console.log(error.response.data.message)
+        setOperation(`${error.response.data.message}`)
+        fiveSeconds()
       })
     } 
     event.preventDefault();
@@ -81,7 +88,7 @@ const App = () => {
       .then(() => {
        setPersons(persons.filter(person => person.id !== id))
        setColorNotification('redNotification')
-        setSuccessfulOperation(`Deleted ${name}`)
+       setOperation(`Deleted ${name}`)
         fiveSeconds()   
       })
       .catch(err => {
@@ -99,7 +106,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      { successfulOperation && <Notification message={successfulOperation} colorNotification={colorNotification} />}
+      { operation && <Notification message={operation} colorNotification={colorNotification} />}
       <Filter filter={handleOnChangeFilter} />
       <h2>add a new</h2>
       <PersonForm

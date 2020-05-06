@@ -76,7 +76,9 @@ app.post("/api/persons", (req, res) => {
             console.log(`added ${savedPerson.name} nubmer ${savedPerson.number}`)
             res.json(savedPerson.toJSON())
         })
-        .catch(error => next(error))
+        .catch(error => {
+            res.status(409).json({ message: error.message})
+        })
 })
 
 app.put("/api/persons/:id", (req, res, next) => {
@@ -100,7 +102,10 @@ app.put("/api/persons/:id", (req, res, next) => {
         name: body.name,
         number: body.number
     }
-    Person.findByIdAndUpdate(req.params.id, person, { new: true})
+    Person.findByIdAndUpdate()
+    Person.findByIdAndUpdate(req.params.id, person, { 
+        new: true,
+    })
         .then(updatedPerson => {
             res.json(updatedPerson.toJSON())
         })
