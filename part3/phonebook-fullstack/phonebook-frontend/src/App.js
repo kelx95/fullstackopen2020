@@ -4,7 +4,6 @@ import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personsService from './services/persons'
 import Notification from './components/Notification'
-
 //npx json-server --port 3001 --watch db.json - to start fake rest api
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -24,6 +23,15 @@ const App = () => {
       setSuccessfulOperation('')
     }, 5000) 
   }
+
+  const informationAlreadyRemovedFromServer = (name) => {
+    setColorNotification('redNotification')
+    setSuccessfulOperation(`Information of ${name} has already been removed from server`)
+    fiveSeconds()
+    personsService.getAll()
+      .then(persons => setPersons(persons))
+  }
+
   const handleClickSubmit = (event) => {
     const personIsFound = [...persons].find(person => person.name === newName);
     console.log("found name object", personIsFound)
@@ -45,11 +53,7 @@ const App = () => {
           fiveSeconds()     
         })
         .catch(err => {
-          setColorNotification('redNotification')
-          setSuccessfulOperation(`Information of ${newName} has already been removed from server`)
-          fiveSeconds()
-          personsService.getAll()
-            .then(persons => setPersons(persons))
+          informationAlreadyRemovedFromServer(newName)
         })
       } 
     } else {
@@ -81,11 +85,7 @@ const App = () => {
         fiveSeconds()   
       })
       .catch(err => {
-        setColorNotification('redNotification')
-        setSuccessfulOperation(`Information of ${name} has already been removed from server`)
-        fiveSeconds()
-        personsService.getAll()
-          .then(persons => setPersons(persons))
+        informationAlreadyRemovedFromServer(name)
       })
     } 
     event.preventDefault();
@@ -119,78 +119,3 @@ const App = () => {
   )
 }
 export default App
-
-
-// import React, { useState } from 'react'
-
-// const App = () => {
-//   const [persons, setPersons] = useState([
-//     { name: 'Arto Hellas', number: '040-123456' },
-//     { name: 'Ada Lovelace', number: '39-44-5323523' },
-//     { name: 'Dan Abramov', number: '12-43-234345' },
-//     { name: 'Mary Poppendieck', number: '39-23-6423122' }
-//   ])
-
-//   const [newName, setNewName] = useState('')
-//   const [newNumber, setNewNumber] = useState('')
-//   const [newFilter, setNewFilter] = useState('')
-
-//   const handleClick = (event) => {
-//     const issInArray = [...persons].find(person => person.name === newName);
-//     issInArray ? alert(`${newName} is already added to phonebook`)
-//       : setPersons(persons.concat({
-//         name: newName,
-//         number: newNumber
-//       }))
-//     event.preventDefault();
-//   }
-//   return (
-//     <div>
-//       <h2>Phonebook</h2>
-//       filter shown with <input
-//         type="text"
-//         name="filterName"
-//         onChange={(event) => setNewFilter(event.target.value) }
-//       />
-//       <br />
-//       <h2>add a new</h2>
-//       <form>
-//         <div>
-//           name: <input
-//             type="text"
-//             placeholder="Enter your name"
-//             name="newName"
-//             value={newName}
-//             onChange={(event) => setNewName(event.target.value)}
-//             required
-//           />
-//         </div>
-//         <div>
-//           number: <input
-//             type="tel"
-//             placeholder="39-44-5323523"
-//             name="newNumber"
-//             value={newNumber}
-//             onChange={(event) => setNewNumber(event.target.value)}
-//             pattern="[0-9]{2}-[0-9]{2}-[0-9]{7}"
-//             required
-//           />
-//         </div>
-//         <div>
-//           <button
-//             type="submit"
-//             onClick={(event) => handleClick(event)}>
-//             add
-//           </button>
-//         </div>
-//       </form>
-//       <h2>Numbers</h2>
-//     {persons.map(person =>
-//       (person.name.toLowerCase().startsWith(newFilter.toLowerCase()))
-//       ?<p key={person.name}>{person.name} {person.number}</p>
-//       :null
-//       )}
-//     </div>
-//   )
-// }
-// export default App

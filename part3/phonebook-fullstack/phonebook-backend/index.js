@@ -36,81 +36,93 @@ app.get("/info", (req, res) => {
         })
 })
 
-app.get("/api/persons/:id", (req, res) => {
-    Person.find({_id: req.params.id})
-        .then(person => person.length == 1 ? res.json(person) : res.status(404).end)  
-})
-
-app.delete("/api/persons/:id", (req, res) => {
-    Person.findByIdAndDelete({_id: req.params.id})
-    .then((result) => {
-        console.log("Deleted this object", result)
-        res.status(204).end()      
+app.get("/api/persons/:id", (req, res, next) => { 
+    Person.findById((req.params.id))
+        .then(person => {
+            if(person) {
+                res.json(person.toJSON())
+            } else {
+                res.status(404).end()
+            }
+        })
+        .catch(error => next(error))
     })
+    
+app.delete("/api/persons/:id", (req, res, next) => {
+    Person.findByIdAndRemove(req.params.id)
+        .then(result => {
+            console.log('delete', result)
+            if(result){
+                res.status(204).end()
+            } else {
+                res.status(404).end()
+            }
+            
+        })
+        .catch(error => next(error))
 })
 
 app.post("/api/persons", (req, res) => {
-    if(req.body.name && req.body.number){
-        const newPerson = new Person({
-            name: req.body.name,
-            number: req.body.number
-        })
-        newPerson.save()
-        .then(newPerson => {
-            console.log(`added ${newPerson.name} nubmer ${newPerson.number}`)
-            res.json(newPerson)          
-        })
+    const body = req.body
+    if(body.name === undefined) {
+        return res.status(400).json({ error: 'name missing..'})
     }
+    const person = new Person({
+        name: body.name,
+        number: body.number
+    })
+    person.save()
+        .then(savedPerson => {
+            console.log(`added ${savedPerson.name} nubmer ${savedPerson.number}`)
+            res.json(savedPerson.toJSON())
+        })
+        .catch(error => next(error))
 })
 
-app.put("/api/persons/:id", (req, res) => {
-    if(req.body.name && req.body.number) {
-        const updatedPerson = {
-            name: req.body.name,
-            number: req.body.number 
-        }
-        Person.findByIdAndUpdate(req.params.id, updatedPerson)
-        .then(returnedObject => {
-            console.log(`Updated ${returnedObject.name}`)
-            const toSend = {
-                ...updatedPerson,
-                id: returnedObject._doc._id
-            }
-            res.json(toSend)
-        })
+app.put("/api/persons/:id", (req, res, next) => {
+    // if(req.body.name && req.body.number) {
+    //     const updatedPerson = {
+    //         name: req.body.name,
+    //         number: req.body.number 
+    //     }
+    //     Person.findByIdAndUpdate(req.params.id, updatedPerson)
+    //     .then(returnedObject => {
+    //         console.log(`Updated ${returnedObject.name}`)
+    //         const toSend = {
+    //             ...updatedPerson,
+    //             id: returnedObject._doc._id
+    //         }
+    //         res.json(toSend)
+    //     })
+    // }
+    const body = req.body
+    const person = {
+        name: body.name,
+        number: body.number
     }
+    Person.findByIdAndUpdate(req.params.id, person, { new: true})
+        .then(updatedPerson => {
+            res.json(updatedPerson.toJSON())
+        })
+        .catch(error => next(error))
 })
+
+const unkownEndpoint = (request, response) => {
+    response.status(404).send({
+        error: 'unkown endpoint'
+    })
+}
+app.use(unkownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+    if(error.name ==='CastError' && error.kind == 'ObjectId') {
+        return response.status(400).send( { error: 'check your id...'})
+    }
+    next(error)
+}
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
 
-// const generateId = () => 
-//     parseInt(Math.random() * 100000000, 10)
-  
-// app.post("/api/persons", (req, res) => {
-//     if(req.body.name && req.body.number){
-//         //console.log(req.body.name)
-//         const checkName = persons.find(person => person.name === req.body.name)
-//         //console.log(checkName)
-//         if(checkName===undefined){
-//             const newPerson = {
-//                 name: req.body.name,
-//                 number: req.body.number,
-//                 id: generateId()
-//             }
-//             //console.log(newPerson)
-//             persons.push(newPerson)
-//             res.json(newPerson)
-//             //console.log(persons)
-//         }else {
-//             res.status(400).json({
-//                 error: "name must be uinque"
-//             })
-//         }
-//     } else {
-//         res.status(400).json({
-//             error: "name or number is missing"
-//         })
-//     }
-// })
