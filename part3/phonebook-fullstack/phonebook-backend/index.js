@@ -123,6 +123,7 @@ const unkownEndpoint = (request, response) => {
 }
 app.use(unkownEndpoint)
 const errorHandler = (error, request, response, next) => {
+    // eslint-disable-next-line eqeqeq
     if (error.name === 'CastError' && error.kind == 'ObjectId') {
         return response.status(400).send({
             error: 'check your id...'
@@ -132,6 +133,7 @@ const errorHandler = (error, request, response, next) => {
 }
 app.use(errorHandler)
 
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 3001
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
