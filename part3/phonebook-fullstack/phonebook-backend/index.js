@@ -12,13 +12,13 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
 
-morgan.token('body', function(req) {
-    if (req.method !== 'POST') return ' ' 
+morgan.token('body', function (req) {
+    if (req.method !== 'POST') return ' '
     return JSON.stringify(req.body)
-  })
+})
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-app.get("/api/persons", (req, res) => {
+app.get('/api/persons', (req, res) => {
     Person.find({})
         .then((persons) => {
             //console.log(persons)
@@ -26,7 +26,7 @@ app.get("/api/persons", (req, res) => {
         })
 })
 
-app.get("/info", (req, res) => {
+app.get('/info', (req, res) => {
     Person.find({})
         .then(persons => {
             const info = `Phonebook has info for ${persons.length} people 
@@ -36,36 +36,38 @@ app.get("/info", (req, res) => {
         })
 })
 
-app.get("/api/persons/:id", (req, res, next) => { 
+app.get('/api/persons/:id', (req, res, next) => {
     Person.findById((req.params.id))
         .then(person => {
-            if(person) {
+            if (person) {
                 res.json(person.toJSON())
             } else {
                 res.status(404).end()
             }
         })
         .catch(error => next(error))
-    })
-    
-app.delete("/api/persons/:id", (req, res, next) => {
+})
+
+app.delete('/api/persons/:id', (req, res, next) => {
     Person.findByIdAndRemove(req.params.id)
         .then(result => {
             console.log('delete', result)
-            if(result){
+            if (result) {
                 res.status(204).end()
             } else {
                 res.status(404).end()
             }
-            
+
         })
         .catch(error => next(error))
 })
 
-app.post("/api/persons", (req, res) => {
+app.post('/api/persons', (req, res) => {
     const body = req.body
-    if(body.name === undefined) {
-        return res.status(400).json({ error: 'name missing..'})
+    if (body.name === undefined) {
+        return res.status(400).json({
+            error: 'name missing..'
+        })
     }
     const person = new Person({
         name: body.name,
@@ -77,15 +79,17 @@ app.post("/api/persons", (req, res) => {
             res.json(savedPerson.toJSON())
         })
         .catch(error => {
-            res.status(409).json({ message: error.message})
+            res.status(409).json({
+                message: error.message
+            })
         })
 })
 
-app.put("/api/persons/:id", (req, res, next) => {
+app.put('/api/persons/:id', (req, res, next) => {
     // if(req.body.name && req.body.number) {
     //     const updatedPerson = {
     //         name: req.body.name,
-    //         number: req.body.number 
+    //         number: req.body.number
     //     }
     //     Person.findByIdAndUpdate(req.params.id, updatedPerson)
     //     .then(returnedObject => {
@@ -103,7 +107,7 @@ app.put("/api/persons/:id", (req, res, next) => {
         number: body.number
     }
     Person.findByIdAndUpdate()
-    Person.findByIdAndUpdate(req.params.id, person, { 
+    Person.findByIdAndUpdate(req.params.id, person, {
         new: true,
     })
         .then(updatedPerson => {
@@ -119,8 +123,10 @@ const unkownEndpoint = (request, response) => {
 }
 app.use(unkownEndpoint)
 const errorHandler = (error, request, response, next) => {
-    if(error.name ==='CastError' && error.kind == 'ObjectId') {
-        return response.status(400).send( { error: 'check your id...'})
+    if (error.name === 'CastError' && error.kind == 'ObjectId') {
+        return response.status(400).send({
+            error: 'check your id...'
+        })
     }
     next(error)
 }
@@ -129,4 +135,3 @@ app.use(errorHandler)
 const PORT = process.env.PORT || 3001
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
-
