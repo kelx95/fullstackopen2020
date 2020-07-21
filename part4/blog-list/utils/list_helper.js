@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const { groupBy } = require('lodash')
+
 
 const dummy = (blogs) => {
   if (Array.isArray(blogs)) {
@@ -101,7 +101,7 @@ const mostLikes = (blogs) => {
   return _.maxBy(authorsWithLikes, 'likes')
 }
 
-console.log(mostLikes(blogsDummy))
+//console.log(mostLikes(blogsDummy))
 
 module.exports = {
   dummy,

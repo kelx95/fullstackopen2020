@@ -1,14 +1,6 @@
-const listHelper = require('../utils/list_helper')
+const Blog = require('../models/blog')
 
-//first one
-test('dummy returns one', () => {
-  const blogs = []
-
-  const result = listHelper.dummy(blogs)
-  expect(result).toBe(1)
-})
-
-const blogsDummy = [
+const initialBlogs = [
   {
     _id: '8a422aa71b54a676234d17f8',
     title: 'Go To Statement Considered Harmful',
@@ -67,47 +59,19 @@ const blogsDummy = [
   },
 ]
 
-//total likes
-describe('total likes', () => {
-  const listWithOneBlog = [
-    {
-      _id: '5a422aa71b54a676234d17f8',
-      title: 'Go To Statement Considered Harmful',
-      author: 'Edsger W. Dijkstra',
-      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-      likes: 5,
-      __v: 0
-    }
-  ]
+const blogsInDb = async () => {
+  const blogs = await Blog.find({})
+  const allBlogs = blogs.map(blog => blog.toJSON())
+  return allBlogs
+}
 
-  test('when list has only one blog equals the likes of that', () => {
-    const result = listHelper.totalLikes(listWithOneBlog)
-    expect(result).toBe(5)
-  })
-})
+// Blog.find({}).then(blog => {
+//   console.log('operation returned the following blogs', blog)
+// })
+// console.log('blogss..')
+// const result = blogsInDb()
+// console.log(result)
 
-//favoriteBlog
-describe('favorite blog', () => {
-  test('the blog who has most likes', () => {
-    const result = listHelper.favoriteBlog(blogsDummy)
-    expect(result.likes).toEqual(120)
-  })
-})
-
-//mostBlogs
-describe('most blogs', () => {
-  test('the author that has the most blogs', () => {
-    const result = listHelper.mostBlogs(blogsDummy)
-    console.log(result)
-    expect(result).toEqual({ author: 'Edsger W. Dijkstra', blogs: 4 })
-  })
-})
-
-//mostLikes
-describe('most likes', () => {
-  test('the author that has the most likes from all the blog posts', () => {
-    const result = listHelper.mostLikes(blogsDummy)
-    console.log(result)
-    expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 150 })
-  })
-})
+module.exports = {
+  initialBlogs, blogsInDb
+}
