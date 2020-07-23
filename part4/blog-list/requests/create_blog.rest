@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InFxcSIsImlkIjoiNWYxOTZhMmMzZjc3ZWYxZTAwYmNkZWY2IiwiaWF0IjoxNTk1NTAyMTIyfQ.-WjDr5qREVteLiOiv7-GItkLKvJUYovrnihtGG0_dag
 
 {
-    "title": "Blog 2",
+    "title": "Blog user added automaitcally through token",
     "author": "ke",
     "url": "no url",
-    "likes": 1,
-    "user": "5f1959616f160a280436c5fb"
+    "likes": 1
 }
