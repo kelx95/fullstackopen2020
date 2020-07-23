@@ -18,9 +18,6 @@ blogRouter.get('/', async (request, response) => {
 
 blogRouter.post('/', async (request, response, next) => {
   const body = request.body
-  console.log('hhiiiiii')
-  console.log(body)
-  console.log(request.token)
   // eslint-disable-next-line no-undef
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   console.log('token undecoded', decodedToken)
@@ -49,10 +46,24 @@ blogRouter.post('/', async (request, response, next) => {
 })
 
 blogRouter.delete('/:id', async (request, response, next) => {
+  console.log('delte route hited')
   const id = request.params.id
-  const objectRemove = await Blog.findByIdAndRemove(id)
-  if (objectRemove) response.status(204).json(objectRemove)
-  response.status(400)
+  // eslint-disable-next-line no-undef
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  console.log('decodedtoken', decodedToken)
+
+  //find the object with the id from the parameter id
+  const findObject = await Blog.findById(id)
+  //check if the id of the user loged in is the same with the blog users id
+  //if the same remove that blog
+  console.log('find object')
+  console.log(findObject)
+  if (findObject.user.toString() === decodedToken.id.toString()) {
+    const deleted = await Blog.findByIdAndDelete(id)
+    response.status(204).json(deleted)
+  } else {
+    response.status(400).send({ error: 'is not your blog post you cant delete it' })
+  }
 })
 
 blogRouter.put('/:id', async (request, response, next) => {
