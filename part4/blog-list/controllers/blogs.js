@@ -3,14 +3,6 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
-// const getTokenFrom = request => {
-//   const authorization = request.get('authorization')
-//   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-//     return authorization.substring(7)
-//   }
-//   return null
-// }
-
 blogRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
   return response.json(blogs)
@@ -20,7 +12,7 @@ blogRouter.post('/', async (request, response, next) => {
   const body = request.body
   // eslint-disable-next-line no-undef
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  console.log('token undecoded', decodedToken)
+  //console.log('token undecoded', decodedToken)
   if (!request.token || !decodedToken.id) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
@@ -38,49 +30,47 @@ blogRouter.post('/', async (request, response, next) => {
   //add the savedBlog id to the user collection
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
-
-  console.log('user after saved', user)
-
   if (savedBlog) return response.status(201).json(savedBlog)
   return response.status(400)
 })
 
 blogRouter.delete('/:id', async (request, response, next) => {
-  console.log('delte route hited')
   const id = request.params.id
+  console.log('delete id', id)
   // eslint-disable-next-line no-undef
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   console.log('decodedtoken', decodedToken)
-
   //find the object with the id from the parameter id
   const findObject = await Blog.findById(id)
+  console.log('blog found', findObject)
+  console.log(findObject)
   //check if the id of the user loged in is the same with the blog users id
   //if the same remove that blog
-  console.log('find object')
-  console.log(findObject)
   if (findObject.user.toString() === decodedToken.id.toString()) {
     const deleted = await Blog.findByIdAndDelete(id)
     response.status(204).json(deleted)
   } else {
-    response.status(400).send({ error: 'is not your blog post you cant delete it' })
+    response.status(401).send({ error: 'Unauthorized if token is not provided' })
   }
 })
 
 blogRouter.put('/:id', async (request, response, next) => {
   const id = request.params.id
-  const oldObject = await Blog.findById(id)
-  //console.log('old object', oldObject)
-
-  const updatedObject = {
-    title: request.body.title || oldObject.title,
-    author: request.body.author || oldObject.author,
-    url: request.body.url || oldObject.url,
-    likes: request.body.likes || oldObject.likes
+  // eslint-disable-next-line no-undef
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  const findObject = await Blog.findById(id)
+  if (findObject.user.toString() === decodedToken.id.toString()) {
+    const updatedObject = {
+      title: request.body.title || findObject.title,
+      author: request.body.author || findObject.author,
+      url: request.body.url || findObject.url,
+      likes: request.body.likes || findObject.likes
+    }
+    const objectToUpdate = await Blog.findByIdAndUpdate(id, updatedObject, { new: true })
+    response.status(200).json(objectToUpdate)
+  } else {
+    response.status(401).send({ error: 'Unauthorized if token is not provided' })
   }
-  const objectToUpdate = await Blog.findByIdAndUpdate(id, updatedObject, { new: true })
-  //console.log(objectToUpdate)
-  if (objectToUpdate) response.status(200).json(objectToUpdate)
-  response.status(400)
 })
 
 module.exports = blogRouter

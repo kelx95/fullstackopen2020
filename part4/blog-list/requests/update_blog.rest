@@ -1,7 +1,11 @@
-PUT http://localhost:3001/api/blogs/5f147a5b7b90861328fd1575
+PUT http://localhost:3001/api/blogs/5f1c414b2a78763dc4a68b22
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtlbG1lbnR4aGVsaWxpIiwiaWQiOiI1ZjE5NTk1MjZmMTYwYTI4MDQzNmM1ZmEiLCJpYXQiOjE1OTU2ODY5Mjh9.XRtXbfSqqButvQoQAW-AMCUDTtyk2RvJ6zKmn57c-Ak
 
 {
+   "title": "udpated by kelment xhelili#11122",
+   "author": "kelmend",
    "likes": 2,
    "url": "wwww.google.com"
 }
+

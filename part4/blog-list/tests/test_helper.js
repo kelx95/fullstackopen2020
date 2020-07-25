@@ -1,63 +1,70 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
   {
-    _id: '8a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
+    title: 'Will get deleted',
     author: 'Kelment',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 15,
-    __v: 0
+    likes: 15
   },
   {
-    _id: '9a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 120,
-    __v: 0
-  },
-  {
-    _id: '0a422aa71b54a676234d17f8',
     title: 'Cloud..',
     author: 'Kelment',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 55,
-    __v: 0
+    likes: 55
   },
   {
-    _id: '2a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
+    title: 'Javascript',
+    author: 'Kelment',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 10,
-    __v: 0
+    likes: 120
   },
   {
-    _id: '1a422aa71b54a676234d17f8',
-    title: 'New blog new',
-    author: 'Kelment Xhelili',
+    title: 'MongoDB',
+    author: 'Kelment',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 10,
-    __v: 0
+    likes: 10
   },
   {
-    _id: '4a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
+    title: 'NewBlog',
+    author: 'Kelment',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 10,
-    __v: 0
+    likes: 10
   },
   {
-    _id: '6a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
+    title: 'NodeJS',
+    author: 'Kelment',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 10,
-    __v: 0
+    likes: 10
+  },
+  {
+    title: 'Newwww',
+    author: 'Kelment',
+    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+    likes: 10
   },
 ]
+
+const initialUsers = [
+  {
+    username: 'kelmentxhelili',
+    password: '123456',
+    name: 'kelment',
+    blogs: []
+  },
+  {
+    username: 'mendixhelili',
+    password: '123456',
+    name: 'mendi',
+    blogs: []
+  }
+]
+
+const loginUser = {
+  username: 'kelmentxhelili',
+  password: '123456'
+}
 
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
@@ -65,13 +72,12 @@ const blogsInDb = async () => {
   return allBlogs
 }
 
-// Blog.find({}).then(blog => {
-//   console.log('operation returned the following blogs', blog)
-// })
-// console.log('blogss..')
-// const result = blogsInDb()
-// console.log(result)
+const usersInDb = async () => {
+  const users = await User.find({})
+  const allUsers = users.map(user => user.toJSON())
+  return allUsers
+}
 
 module.exports = {
-  initialBlogs, blogsInDb
+  initialBlogs, blogsInDb, initialUsers, usersInDb, loginUser
 }
