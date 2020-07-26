@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+
+  const [notification, setNotificaton] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -32,6 +35,7 @@ const App = () => {
       setUser(returnedUser)
       localStorage.setItem('user', JSON.stringify(returnedUser))
     } catch (exception) {
+      setNotificaton('wrong username or password')
       console.log('error')
     }
   }
@@ -45,20 +49,21 @@ const App = () => {
         url
       })
       //update the blog list
+      setNotificaton(returnedBlog)
       setBlogs([...blogs, returnedBlog])
       //empty the form
       setTitle('')
       setAuthor('')
       setUrl('')
-      console.log(returnedBlog)
+      //console.log(returnedBlog)
     } catch (exception) {
+      setNotificaton('something went wrong try again....')
       console.log('error')
     }
   }
 
   const loginForm = () => (
     <div>
-      <h2>Log in to application</h2>
       <form onSubmit={handleLogin}>
         <div>
           <input
@@ -125,10 +130,17 @@ const App = () => {
     <div>
       {
         (user === null)
-          ? loginForm()
+          ? (
+            <div>
+              <h2>Log in to application</h2>
+              {notification && <Notification blog={notification} setNotification={setNotificaton} />}
+              {loginForm()}
+            </div>
+          )
           : (
             <div>
               <h2>blogs</h2>
+              {notification && <Notification blog={notification} setNotification={setNotificaton} />}
               {`${user.name} logged in `}
               <button onClick={logOut}>logout</button>
               <br />
