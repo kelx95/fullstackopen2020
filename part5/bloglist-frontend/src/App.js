@@ -5,8 +5,13 @@ import blogService from './services/blogs'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -24,9 +29,28 @@ const App = () => {
     event.preventDefault()
     try {
       const returnedUser = await blogService.login({ username, password })
-      console.log(returnedUser)
       setUser(returnedUser)
       localStorage.setItem('user', JSON.stringify(returnedUser))
+    } catch (exception) {
+      console.log('error')
+    }
+  }
+
+  const handleCreateNewBlog = async (event) => {
+    event.preventDefault()
+    try {
+      const returnedBlog = await blogService.createNewBlog({
+        title,
+        author,
+        url
+      })
+      //update the blog list
+      setBlogs([...blogs, returnedBlog])
+      //empty the form
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      console.log(returnedBlog)
     } catch (exception) {
       console.log('error')
     }
@@ -57,6 +81,42 @@ const App = () => {
     </div>
   )
 
+  const createNewBlog = () => (
+    <div>
+      <h2>create new</h2>
+      <form onSubmit={handleCreateNewBlog}>
+        <div>
+          title:
+          <input
+            type="text"
+            placeholder="title"
+            value={title}
+            onChange={({ target }) => setTitle(target.value)}
+          />
+        </div>
+        <div>
+          author:
+          <input
+            type="author"
+            placeholder="author"
+            value={author}
+            onChange={({ target }) => setAuthor(target.value)}
+          />
+        </div>
+        <div>
+          url:
+          <input
+            type="text"
+            placeholder="url"
+            value={url}
+            onChange={({ target }) => setUrl(target.value)}
+          />
+        </div>
+        <button type="submit">create</button>
+      </form>
+    </div>
+  )
+
   const logOut = () => {
     localStorage.removeItem('user')
     setUser(null)
@@ -72,6 +132,7 @@ const App = () => {
               {`${user.name} logged in `}
               <button onClick={logOut}>logout</button>
               <br />
+              {createNewBlog()}
               {blogs.map(blog =>
                 <Blog key={blog.id} blog={blog} />
               )}
