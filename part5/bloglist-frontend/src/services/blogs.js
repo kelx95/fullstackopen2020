@@ -8,12 +8,27 @@ const login = async (user) => {
   return response.data
 }
 
+const config = {
+  headers: {
+    Authorization: `bearer ${JSON.parse(localStorage.getItem('user')).token}`
+  },
+}
+
 const createNewBlog = async (newBlog) => {
-  const token = JSON.parse(localStorage.getItem('user')).token
-  const config = {
-    headers: { Authorization: `bearer ${token}` },
-  }
   const response = await axios.post(baseUrl, newBlog, config)
+  return response.data
+}
+const updateLikes = async (updateBlog) => {
+  const updatedBlog = {
+    ...updateBlog,
+    likes: updateBlog.likes + 1
+  }
+  const response = await axios.put(`/api/blogs/${updateBlog.id}`, updatedBlog, config)
+  return response.data
+}
+
+const deleteBlog = async (blog) => {
+  const response = await axios.delete(`/api/blogs/${blog.id}`, config)
   return response.data
 }
 
@@ -22,4 +37,4 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
-export default { getAll, login, createNewBlog }
+export default { getAll, login, createNewBlog, updateLikes, deleteBlog }

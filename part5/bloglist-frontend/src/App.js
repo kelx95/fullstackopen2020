@@ -26,6 +26,8 @@ const App = () => {
       setUser(JSON.parse(localStorage.getItem('user')))
     }
   }, [])
+  ////////
+  console.log(blogs.sort((blog1, blog2) => blog2.likes - blog1.likes))
 
   //login
   const handleLogin = async (event) => {
@@ -92,7 +94,7 @@ const App = () => {
               {`${user.name} logged in `}
               <button onClick={logOut}>logout</button>
               <br />
-
+              <br />
               <Toggable buttonLabel='create new' ref={blogFormRef}>
                 <BlogForm
                   blogs={blogs}
@@ -101,10 +103,18 @@ const App = () => {
                   hideForm={hideForm}
                 />
               </Toggable>
-
+              <br />
               {blogs.map(blog =>
-                <Blog key={blog.id} blog={blog} />
-              )}
+                <Blog
+                  key={blog.id}
+                  blog={blog}
+                  blogs={blogs}
+                  setBlogs={setBlogs}
+                  setNotificaton={setNotificaton}
+                />
+              ).sort((blog1, blog2) => blog2.likes - blog1.likes)
+
+              }
             </div>
           )
       }
