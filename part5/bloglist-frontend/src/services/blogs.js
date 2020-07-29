@@ -8,14 +8,21 @@ const login = async (user) => {
   return response.data
 }
 
-const config = {
-  headers: {
-    Authorization: `bearer ${JSON.parse(localStorage.getItem('user')).token}`
-  },
-}
+const configFunc = () => (
+  {
+    headers: {
+      Authorization: `bearer ${JSON.parse(localStorage.getItem('user')).token}`
+    },
+  }
+)
+// const config = {
+//   headers: {
+//     Authorization: `bearer ${JSON.parse(localStorage.getItem('user')).token}`
+//   },
+// }
 
 const createNewBlog = async (newBlog) => {
-  const response = await axios.post(baseUrl, newBlog, config)
+  const response = await axios.post(baseUrl, newBlog, configFunc())
   return response.data
 }
 const updateLikes = async (updateBlog) => {
@@ -23,12 +30,12 @@ const updateLikes = async (updateBlog) => {
     ...updateBlog,
     likes: updateBlog.likes + 1
   }
-  const response = await axios.put(`/api/blogs/${updateBlog.id}`, updatedBlog, config)
+  const response = await axios.put(`/api/blogs/${updateBlog.id}`, updatedBlog, configFunc())
   return response.data
 }
 
 const deleteBlog = async (blog) => {
-  const response = await axios.delete(`/api/blogs/${blog.id}`, config)
+  const response = await axios.delete(`/api/blogs/${blog.id}`, configFunc())
   return response.data
 }
 

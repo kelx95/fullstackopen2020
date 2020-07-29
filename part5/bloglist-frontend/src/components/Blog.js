@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
+
+
 const Blog = ({ blog, blogs, setBlogs, setNotificaton }) => {
   const [view, setView] = useState(false)
 
@@ -36,7 +38,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotificaton }) => {
       }
     } catch (exception) {
       console.log(exception)
-      setNotificaton(`Something went wrong blog page will refresh`)
+      setNotificaton('Something went wrong blog page will refresh')
       //get all blogs again
       const allBlogs = await blogService.getAll()
       setBlogs(allBlogs)
