@@ -71,10 +71,20 @@ const App = () => {
     setUser(null)
   }
 
-  //hide the form after creating new blog
-  const hideForm = () => {
-    blogFormRef.current.toggleVisibility()
+  const addBlog = async (blogObject) => {
+    try {
+      const returnedBlog = await blogService.createNewBlog(blogObject)
+      //hide the form
+      blogFormRef.current.toggleVisibility()
+      //update the blog list
+      setNotificaton(returnedBlog)
+      setBlogs([...blogs, returnedBlog])
+    } catch (exception) {
+      setNotificaton('something went wrong try again....')
+      console.log('error')
+    }
   }
+
 
   return (
     <div>
@@ -97,10 +107,7 @@ const App = () => {
               <br />
               <Toggable buttonLabel='create new' ref={blogFormRef}>
                 <BlogForm
-                  blogs={blogs}
-                  setBlogs={setBlogs}
-                  setNotificaton={setNotificaton}
-                  hideForm={hideForm}
+                  createBlog={addBlog}
                 />
               </Toggable>
               <br />

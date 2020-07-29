@@ -32,7 +32,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotificaton }) => {
     try {
       if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
         const blogToDelete = blog
-        const deletedBlog = await blogService.deleteBlog(blog)
+        await blogService.deleteBlog(blog)
         const deleted = blogs.filter(blog => blog.id !== blogToDelete.id)
         setBlogs(deleted)
       }

@@ -1,36 +1,22 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
-const BlogForm = ({ blogs, setBlogs, setNotificaton, hideForm }) => {
+const BlogForm = ({ createBlog }) => {
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-
-
-  const handleCreateNewBlog = async (event) => {
+  const handleCreateNewBlog = (event) => {
     event.preventDefault()
-    try {
-      const returnedBlog = await blogService.createNewBlog({
-        title,
-        author,
-        url
-      })
-      //update the blog list
-      setNotificaton(returnedBlog)
-      setBlogs([...blogs, returnedBlog])
-      //empty the form
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      ///hide the form
-      hideForm()
-    } catch (exception) {
-      setNotificaton('something went wrong try again....')
-      console.log('error')
-    }
+    createBlog({
+      title,
+      author,
+      url
+    })
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   return (
