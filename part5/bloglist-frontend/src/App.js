@@ -71,6 +71,7 @@ const App = () => {
     setUser(null)
   }
 
+  //passed to BlogForm as prop
   const addBlog = async (blogObject) => {
     try {
       const returnedBlog = await blogService.createNewBlog(blogObject)
@@ -82,6 +83,36 @@ const App = () => {
     } catch (exception) {
       setNotificaton('something went wrong try again....')
       console.log('error')
+    }
+  }
+
+
+  const likeBlog = async (blog) => {
+    try {
+      const updateBlog = await blogService.updateLikes(blog)
+      const udpated = blogs.map(blog => blog.id !== updateBlog.id ? blog : updateBlog)
+      setBlogs(udpated)
+    } catch (exception) {
+      console.log(exception)
+      setNotificaton('Something went wrong')
+    }
+
+  }
+
+  const deleteBlog = async (blog) => {
+    try {
+      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+        const blogToDelete = blog
+        await blogService.deleteBlog(blog)
+        const deleted = blogs.filter(blog => blog.id !== blogToDelete.id)
+        setBlogs(deleted)
+      }
+    } catch (exception) {
+      console.log(exception)
+      setNotificaton('Something went wrong blog page will refresh')
+      //get all blogs again
+      const allBlogs = await blogService.getAll()
+      setBlogs(allBlogs)
     }
   }
 
@@ -115,9 +146,8 @@ const App = () => {
                 <Blog
                   key={blog.id}
                   blog={blog}
-                  blogs={blogs}
-                  setBlogs={setBlogs}
-                  setNotificaton={setNotificaton}
+                  handleBlogLike={likeBlog}
+                  handleBlogDelete={deleteBlog}
                 />
               ).sort((blog1, blog2) => blog2.likes - blog1.likes)
 

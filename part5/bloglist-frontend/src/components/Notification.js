@@ -5,7 +5,7 @@ const Notificaton = ({ blog, setNotification }) => {
     setNotification(null)
   }, 3000)
 
-  if (typeof blog === "object") {
+  if (typeof blog === 'object') {
     return (
       <div style={{
         border: '3px solid green',
@@ -17,7 +17,7 @@ const Notificaton = ({ blog, setNotification }) => {
           }
         }>
           a new blog {blog.title} by {blog.author} added
-                </p>
+        </p>
       </div>
     )
   } else {
