@@ -88,12 +88,32 @@ describe('Blog app', function () {
       cy.login({ username: 'UserTest2', password: 'testtest2' })
       cy.contains('view').click()
       cy.get('.delete').click()
-      //Something went wrong blog page will refresh
+
       cy.get('.error').should('contain', 'Something went wrong blog page will refresh')
         .and('have.css', 'border', '3px solid rgb(255, 0, 0)')
         .and('have.css', 'color', 'rgb(255, 0, 0)')
         .and('have.css', 'background-color', 'rgb(211, 211, 211)')
     })
 
+    it.only('Blogs are ordered according to likes', function () {
+      cy.createBlog({ title: 'title3', author: 'author1', url: 'url1', likes: 1 })
+      cy.createBlog({ title: 'title4', author: 'author2', url: 'url2', likes: 30 })
+      cy.createBlog({ title: 'title5', author: 'author3', url: 'url3', likes: 20 })
+
+      cy.get('.container').then(blogs => {
+        for (let blog of blogs) {
+          cy.get(blog).find('.view').click()
+        }
+      })
+
+      cy.get('.viewSection').then(blogs => {
+        console.log(blogs)
+        cy.wrap(blogs[0]).should('contain', 30)
+        cy.wrap(blogs[1]).should('contain', 20)
+        cy.wrap(blogs[2]).should('contain', 1)
+        cy.wrap(blogs[3]).should('contain', 1)
+        cy.wrap(blogs[4]).should('contain', 1)
+      })
+    })
   })
 })

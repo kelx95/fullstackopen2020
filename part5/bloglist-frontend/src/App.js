@@ -144,16 +144,17 @@ const App = () => {
                 />
               </Toggable>
               <br />
-              {blogs.map(blog =>
-                <Blog
-                  key={blog.id}
-                  blog={blog}
-                  handleBlogLike={likeBlog}
-                  handleBlogDelete={deleteBlog}
-                />
-              ).sort((blog1, blog2) => blog2.likes - blog1.likes)
-
-              }
+              <div className="blogs-section">
+                {blogs.map(blog =>
+                  <Blog
+                    key={blog.id}
+                    blog={blog}
+                    handleBlogLike={likeBlog}
+                    handleBlogDelete={deleteBlog}
+                  />
+                ).sort((blog1, blog2) => blog2.likes - blog1.likes)
+                }
+              </div>
             </div>
           )
       }
