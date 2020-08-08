@@ -9,28 +9,22 @@ const Notificaton = ({ blog, setNotification }) => {
     return (
       <div style={{
         border: '3px solid green',
-        backgroundColor: 'lightgrey'
+        backgroundColor: 'lightgrey',
+        color: 'green'
       }}>
-        <p style={
-          {
-            color: 'green'
-          }
-        }>
+        <p>
           a new blog {blog.title} by {blog.author} added
         </p>
       </div>
     )
   } else {
     return (
-      <div style={{
+      <div className='error' style={{
         border: '3px solid red',
-        backgroundColor: 'lightgrey'
+        backgroundColor: 'lightgrey',
+        color: 'red'
       }}>
-        <p style={
-          {
-            color: 'red'
-          }
-        }>
+        <p>
           {blog}
         </p>
       </div>)
