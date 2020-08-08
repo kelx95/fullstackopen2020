@@ -9,6 +9,11 @@ describe('Blog app', function () {
       password: "testtest",
       name: "User"
     })
+    cy.request('POST', 'http://localhost:3001/api/users', {
+      username: "UserTest2",
+      password: "testtest2",
+      name: "User2"
+    })
     cy.visit('http://localhost:3000')
   })
 
@@ -38,7 +43,40 @@ describe('Blog app', function () {
         .and('have.css', 'border', '3px solid rgb(255, 0, 0)')
         .and('have.css', 'color', 'rgb(255, 0, 0)')
         .and('have.css', 'background-color', 'rgb(211, 211, 211)')
+    })
+  })
+
+  describe.only('When logged id', function () {
+    beforeEach(function () {
+      //log in user here
+      cy.login({ username: 'UserTest', password: 'testtest' })
+      cy.createBlog({ title: 'title1', author: 'author1', url: 'url1', likes: 1 })
+    })
+
+    it('A blog can be created', function () {
+      cy.contains('create new').click()
+      cy.get('#title').type('test-title')
+      cy.get('#author').type('test-author')
+      cy.get('#url').type('test-url')
+      cy.get('#create').click()
+      cy.get('.error').should('contain', 'a new blog test-title by test-author added')
+        .and('have.css', 'border', '3px solid rgb(0, 128, 0)')
+        .and('have.css', 'color', 'rgb(0, 128, 0)')
+        .and('have.css', 'background-color', 'rgb(211, 211, 211)')
+
+      cy.get('.container').contains('test-title').parent().find('.view').click()
+      cy.get('.viewSection')
+        .contains('test-author')
+        .contains('test-url')
 
     })
+
+    it.only('A blog can be liked', function () {
+      cy.contains('view').click()
+      cy.get('.like')
+        .click()
+      cy.get('.like').parent().contains('2')
+    })
+
   })
 })

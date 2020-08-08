@@ -3,11 +3,11 @@ import React from 'react'
 const Notificaton = ({ blog, setNotification }) => {
   setTimeout(() => {
     setNotification(null)
-  }, 3000)
+  }, 4000)
 
   if (typeof blog === 'object') {
     return (
-      <div style={{
+      <div className='error' style={{
         border: '3px solid green',
         backgroundColor: 'lightgrey',
         color: 'green'

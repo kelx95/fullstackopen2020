@@ -23,12 +23,9 @@ const Blog = ({ blog, handleBlogLike, handleBlogDelete }) => {
 
       {view && (
         <div className="viewSection">
-          {blog.url}
-          <br />
-          {blog.likes}&nbsp;<button className="like" onClick={() => handleBlogLike(blog)}>like</button>
-          <br />
-          {blog.author}
-          <br />
+          <div>{blog.url}</div>
+          <div>{blog.likes}&nbsp;<button className="like" onClick={() => handleBlogLike(blog)}>like</button></div>
+          <div>{blog.author}</div>
           <button className="delete" onClick={() => handleBlogDelete(blog)}>Remove</button>
         </div>
       )}
