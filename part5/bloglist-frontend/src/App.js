@@ -47,6 +47,7 @@ const App = () => {
       <form onSubmit={handleLogin}>
         <div>
           <input
+            id="username"
             type="text"
             placeholder="username"
             value={username}
@@ -55,6 +56,7 @@ const App = () => {
         </div>
         <div>
           <input
+            id="password"
             type="password"
             placeholder="password"
             value={password}
