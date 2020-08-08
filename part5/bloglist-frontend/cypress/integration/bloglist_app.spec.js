@@ -51,6 +51,7 @@ describe('Blog app', function () {
       //log in user here
       cy.login({ username: 'UserTest', password: 'testtest' })
       cy.createBlog({ title: 'title1', author: 'author1', url: 'url1', likes: 1 })
+      cy.createBlog({ title: 'title2', author: 'author2', url: 'url2', likes: 1 })
     })
 
     it('A blog can be created', function () {
@@ -67,15 +68,31 @@ describe('Blog app', function () {
       cy.get('.container').contains('test-title').parent().find('.view').click()
       cy.get('.viewSection')
         .contains('test-author')
-        .contains('test-url')
 
     })
 
-    it.only('A blog can be liked', function () {
+    it('A blog can be liked', function () {
       cy.contains('view').click()
       cy.get('.like')
         .click()
       cy.get('.like').parent().contains('2')
+    })
+
+    it('The user who created a blog can delete it', function () {
+      cy.contains('view').click()
+      cy.contains('title1')
+      cy.get('.delete').click()
+      cy.get('html').should('not.contain', 'title1')
+
+      cy.contains('logout').click()
+      cy.login({ username: 'UserTest2', password: 'testtest2' })
+      cy.contains('view').click()
+      cy.get('.delete').click()
+      //Something went wrong blog page will refresh
+      cy.get('.error').should('contain', 'Something went wrong blog page will refresh')
+        .and('have.css', 'border', '3px solid rgb(255, 0, 0)')
+        .and('have.css', 'color', 'rgb(255, 0, 0)')
+        .and('have.css', 'background-color', 'rgb(211, 211, 211)')
     })
 
   })
