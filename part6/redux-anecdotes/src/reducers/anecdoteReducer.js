@@ -1,3 +1,4 @@
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -17,7 +18,24 @@ const asObject = (anecdote) => {
 }
 
 const initialState = anecdotesAtStart.map(asObject)
-
+//action creators
+const vote = (id) => {
+  return ({
+    type: 'VOTE',
+    data: { id }
+  })
+}
+const addAnecdote = (content) => {
+  return ({
+    type: 'NEW_ANECDOTE',
+    data: {
+      content,
+      id: getId(),
+      votes: 0
+    }
+  })
+}
+//Reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'VOTE':
@@ -25,15 +43,15 @@ const reducer = (state = initialState, action) => {
       votedAnecdote.votes += 1;
       return [
         ...state.map(anecdote => anecdote.id !== votedAnecdote.id ? anecdote : votedAnecdote)
-      ]
+      ].sort((a, b) => b.votes - a.votes)
     case 'NEW_ANECDOTE':
       return [
         ...state,
         action.data
-      ]
+      ].sort((a, b) => b.votes - a.votes)
     default:
       return state;
   }
 }
 
-export { reducer, initialState, getId }
+export { reducer, initialState, getId, vote, addAnecdote }
