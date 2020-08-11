@@ -1,4 +1,4 @@
-import { reducer, initialState } from './anecdoteReducer'
+import { reducer, initialState, getId } from './anecdoteReducer'
 import store from '../store'
 
 describe('anecdoteReducer', () => {
@@ -14,5 +14,19 @@ describe('anecdoteReducer', () => {
         //console.log(newState)
         expect(newState).toHaveLength(6)
         expect(newState[0].votes).toBe(1)
+    })
+    test('return new state when a new anecdote gets added', () => {
+        const action = {
+            type: 'NEW_ANECDOTE',
+            data: {
+                content: 'test test',
+                id: getId(),
+                votes: 0
+            }
+        }
+        const newState = reducer(initialState, action)
+        console.log(newState)
+        expect(newState).toHaveLength(7)
+        expect(newState[6].content).toBe('test test')
     })
 })
