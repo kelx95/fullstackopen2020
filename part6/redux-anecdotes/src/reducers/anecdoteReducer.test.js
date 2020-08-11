@@ -3,7 +3,7 @@ import store from '../store'
 
 describe('anecdoteReducer', () => {
     test('return new state when voted', () => {
-        console.log(initialState)
+        //console.log(initialState)
         const action = {
             type: 'VOTE',
             data: { id: initialState[0].id }
@@ -42,7 +42,7 @@ describe('anecdoteReducer', () => {
             }
         }
         const newState = reducer(initialState, action)
-        console.log(newState)
+        //console.log(newState)
         expect(newState).toHaveLength(7)
         expect(newState[6].content).toBe('test test')
     })
