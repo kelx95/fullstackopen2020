@@ -23,12 +23,12 @@ const reducer = (state = initialState, action) => {
       const votedAnecdote = state.filter(anecdote => anecdote.id === action.data.id)[0]
       votedAnecdote.votes += 1;
       return [
-        ...state.filter(anecdote => anecdote.id !== votedAnecdote.id),
-        votedAnecdote
+        ...state.map(anecdote => anecdote.id !== votedAnecdote.id ? anecdote : votedAnecdote)
       ]
     default:
       return state;
   }
+  return state;
 }
 
-export default reducer
+export { reducer, initialState }
