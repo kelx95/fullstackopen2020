@@ -1,4 +1,3 @@
-
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -19,10 +18,13 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 //action creators
-const vote = (id) => {
+const vote = (anecdote) => {
   return ({
     type: 'VOTE',
-    data: { id }
+    data: {
+      id: anecdote.id,
+      content: anecdote.content
+    }
   })
 }
 const addAnecdote = (content) => {
@@ -36,7 +38,7 @@ const addAnecdote = (content) => {
   })
 }
 //Reducer
-const reducer = (state = initialState, action) => {
+const anecdoteReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'VOTE':
       const votedAnecdote = state.filter(anecdote => anecdote.id === action.data.id)[0]
@@ -54,4 +56,4 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export { reducer, initialState, getId, vote, addAnecdote }
+export { anecdoteReducer, initialState, getId, vote, addAnecdote }
