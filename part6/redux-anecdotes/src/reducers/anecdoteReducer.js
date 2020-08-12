@@ -18,12 +18,11 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 //action creators
-const vote = (anecdote) => {
+const vote = (id) => {
   return ({
     type: 'VOTE',
     data: {
-      id: anecdote.id,
-      content: anecdote.content
+      id
     }
   })
 }
