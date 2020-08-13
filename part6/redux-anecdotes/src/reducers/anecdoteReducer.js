@@ -1,4 +1,4 @@
-
+import anecdoteService from '../services/anecdotes'
 const vote = (id) => {
   return ({
     type: 'VOTE',
@@ -7,17 +7,24 @@ const vote = (id) => {
     }
   })
 }
-const addAnecdote = (data) => {
-  return ({
-    type: 'NEW_ANECDOTE',
-    data
-  })
+const addAnecdote = (content) => {
+  return async dispatch => {
+    const newAnecdote = await anecdoteService.addNewAnecdote(content)
+    dispatch({
+      type: 'NEW_ANECDOTE',
+      data: newAnecdote
+    })
+  }
 }
-const initializeAnecdotes = (data) => {
-  return ({
-    type: 'INITIALIZE_ANECDOTES',
-    data
-  })
+
+const initializeAnecdotes = () => {
+  return async dispatch => {
+    const allAnecdotes = await anecdoteService.getAllAnecdotes()
+    dispatch({
+      type: 'INITIALIZE_ANECDOTES',
+      data: allAnecdotes
+    })
+  }
 }
 //Reducer
 const anecdoteReducer = (state = [], action) => {
@@ -34,7 +41,7 @@ const anecdoteReducer = (state = [], action) => {
         action.data
       ].sort((a, b) => b.votes - a.votes)
     case 'INITIALIZE_ANECDOTES':
-      console.log(action.data)
+      //console.log(action.data)
       return action.data.sort((a, b) => b.votes - a.votes)
     default:
       return state;

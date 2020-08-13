@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { vote } from '../reducers/anecdoteReducer'
 import { removeNotification, vote_notification } from '../reducers/notificatonReducer'
@@ -15,10 +15,11 @@ const AnecdoteList = () => {
             dispatch(removeNotification())
         }, 5000);
     }
+
     return (
         <div>
             {(filtered.length > 0 && filtered.length < anecdotes.length) ?
-                <div>
+                <Fragment>
                     {filtered.map(anecdote =>
                         <div key={anecdote.id}>
                             <div>
@@ -30,9 +31,9 @@ const AnecdoteList = () => {
                             </div>
                         </div>
                     )}
-                </div>
+                </Fragment>
                 :
-                <div>
+                <Fragment>
                     {anecdotes.map(anecdote =>
                         <div key={anecdote.id}>
                             <div>
@@ -44,7 +45,7 @@ const AnecdoteList = () => {
                             </div>
                         </div>
                     )}
-                </div>
+                </Fragment>
             }
         </div>
     )
