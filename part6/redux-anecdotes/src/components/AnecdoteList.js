@@ -7,6 +7,14 @@ const AnecdoteList = () => {
     const anecdotes = useSelector(state => state.anecdotes)
     const filtered = useSelector(state => state.filter)
     const dispatch = useDispatch()
+
+    const handleVote = (anecdote) => {
+        dispatch(vote(anecdote.id))
+        dispatch(vote_notification(anecdote.content))
+        setTimeout(() => {
+            dispatch(removeNotification())
+        }, 5000);
+    }
     return (
         <div>
             {(filtered.length > 0 && filtered.length < anecdotes.length) ?
@@ -18,13 +26,7 @@ const AnecdoteList = () => {
                             </div>
                             <div>
                                 has {anecdote.votes}
-                                <button onClick={() => {
-                                    dispatch(vote(anecdote.id))
-                                    dispatch(vote_notification(anecdote.content))
-                                    setTimeout(() => {
-                                        dispatch(removeNotification())
-                                    }, 5000);
-                                }}>vote</button>
+                                <button onClick={() => handleVote(anecdote)}>vote</button>
                             </div>
                         </div>
                     )}
@@ -38,13 +40,7 @@ const AnecdoteList = () => {
                             </div>
                             <div>
                                 has {anecdote.votes}
-                                <button onClick={() => {
-                                    dispatch(vote(anecdote.id))
-                                    dispatch(vote_notification(anecdote.content))
-                                    setTimeout(() => {
-                                        dispatch(removeNotification())
-                                    }, 5000);
-                                }}>vote</button>
+                                <button onClick={() => handleVote(anecdote)}>vote</button>
                             </div>
                         </div>
                     )}
