@@ -1,31 +1,29 @@
 const notificationReducer = (state = '', action) => {
     switch (action.type) {
-        case 'VOTE_NOTIFICATION':
-            return state = `you voted '${action.data.content}'`
-        case 'NEW_ANECDOTE_NOTIFICATION':
-            return state = `New anecdote added '${action.data.content}'`
+        case 'NOTIFICATION':
+            return action.data.message
         case 'REMOVE_NOTIFICATION':
             return state = ''
         default:
             return state;
     }
 }
-export const vote_notification = (content) => {
-    return ({
-        type: 'VOTE_NOTIFICATION',
-        data: {
-            content
-        }
-    })
+
+export const setNotification = (message, secondsActive) => {
+    return async dispatch => {
+        setTimeout(() => {
+            dispatch(removeNotification())
+        }, secondsActive * 1000)
+
+        dispatch({
+            type: 'NOTIFICATION',
+            data: {
+                message
+            }
+        })
+    }
 }
-export const newAnecdote_notification = (content) => {
-    return ({
-        type: 'NEW_ANECDOTE_NOTIFICATION',
-        data: {
-            content
-        }
-    })
-}
+
 export const removeNotification = () => {
     return ({
         type: 'REMOVE_NOTIFICATION'
