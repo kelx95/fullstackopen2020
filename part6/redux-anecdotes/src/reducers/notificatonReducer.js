@@ -1,9 +1,17 @@
-const notificationReducer = (state = '', action) => {
+const initialState = {
+    message: [],
+    timeoutID: []
+}
+const notificationReducer = (state = initialState, action) => {
     switch (action.type) {
         case 'NOTIFICATION':
-            return action.data.message
+            clearTimeout(state.timeoutID[state.timeoutID.length - 1])
+            return {
+                message: state.message.concat(action.data.message),
+                timeoutID: state.timeoutID.concat(action.data.timeoutID)
+            }
         case 'REMOVE_NOTIFICATION':
-            return state = ''
+            return state = initialState
         default:
             return state;
     }
@@ -11,14 +19,18 @@ const notificationReducer = (state = '', action) => {
 
 export const setNotification = (message, secondsActive) => {
     return async dispatch => {
-        setTimeout(() => {
-            dispatch(removeNotification())
-        }, secondsActive * 1000)
-
+        let timeoutID
+        function delayAlert() {
+            timeoutID = setTimeout(() => {
+                dispatch(removeNotification())
+            }, secondsActive * 1000)
+        }
+        delayAlert()
         dispatch({
             type: 'NOTIFICATION',
             data: {
-                message
+                message,
+                timeoutID
             }
         })
     }
