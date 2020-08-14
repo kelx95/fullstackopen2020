@@ -1,18 +1,14 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 import { filterAnecdotes } from '../reducers/filterReducer'
 
-const Filter = () => {
-  const anecdotes = useSelector(state => state.anecdotes)
-  const dispatch = useDispatch()
-
+const Filter = ({ anecdotes, filterAnecdotes }) => {
   const handleChange = (event) => {
     if (event.target.value === '') {
-      dispatch(filterAnecdotes([]))
+      filterAnecdotes()
     } else {
       const filter = event.target.value.toLowerCase()
-      const filtered = anecdotes.filter(anecdote => anecdote.content.toLowerCase().includes(filter))
-      dispatch(filterAnecdotes(filtered))
+      filterAnecdotes(filter, anecdotes)
     }
   }
   const style = {
@@ -25,5 +21,18 @@ const Filter = () => {
     </div>
   )
 }
+const mapStateToProps = state => {
+  return {
+    anecdotes: state.anecdotes
+  }
+}
 
-export default Filter
+const mapDispatchToProps = (dispatch) => {
+  return {
+    filterAnecdotes: (filter, anecdotes) => {
+      dispatch(filterAnecdotes(filter, anecdotes))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter)
