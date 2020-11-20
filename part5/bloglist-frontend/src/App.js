@@ -88,7 +88,6 @@ const App = () => {
     }
   }
 
-
   const likeBlog = async (blog) => {
     try {
       const updateBlog = await blogService.updateLikes(blog)
