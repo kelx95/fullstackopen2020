@@ -1,0 +1,59 @@
+{
+  "notes": [
+    {
+      "content": "custom-hookit aivan mahtavia",
+      "id": 1
+    },
+    {
+      "content": "paras feature ikinä <3",
+      "id": 2
+    },
+    {
+      "content": "aloo",
+      "id": 13
+    },
+    {
+      "content": "hello",
+      "id": 14
+    },
+    {
+      "content": "new new note",
+      "id": 15
+    },
+    {
+      "content": "sdfsdfds",
+      "id": 16
+    },
+    {
+      "content": "helllo",
+      "id": 17
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "sdff",
+      "number": "6465465464645",
+      "id": 2
+    },
+    {
+      "name": "kelment",
+      "number": "123123123",
+      "id": 3
+    },
+    {
+      "name": "djelili",
+      "number": "12313213213132",
+      "id": 4
+    },
+    {
+      "name": "keliiii",
+      "number": "123132131321321",
+      "id": 5
+    }
+  ]
+}
