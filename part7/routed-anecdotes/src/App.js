@@ -101,7 +101,7 @@ const Footer = () => (
 );
 
 const CreateNew = (props) => {
-  
+  const history = useHistory();
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
   const [info, setInfo] = useState("");
@@ -118,7 +118,7 @@ const CreateNew = (props) => {
     setContent("");
     setAuthor("");
     setInfo("");
-    
+    history.push("/anecdotes");
   };
 
   return (
@@ -155,9 +155,24 @@ const CreateNew = (props) => {
   );
 };
 
-const App = () => {
-  // const history = useHistory();
+const Notification = ({ notification }) => {
 
+  if (notification) {
+    return (
+      <div
+        style={{
+          border: "3px solid green",
+          color: "green",
+        }}
+      >
+        {notification.content}
+      </div>
+    );
+  }
+  return null;
+};
+
+const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
       content: "If it hurts, do it more often",
@@ -175,11 +190,15 @@ const App = () => {
     },
   ]);
 
-  const [notification, setNotification] = useState("");
+  const [notification, setNotification] = useState();
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
-    setAnecdotes(anecdotes.concat(anecdote))
+    setAnecdotes(anecdotes.concat(anecdote));
+    setNotification(anecdote);
+    setTimeout(() => {
+      setNotification(null)
+    }, 10000)
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -199,6 +218,11 @@ const App = () => {
     <Router>
       <h1>Software anecdotes</h1>
       <Menu />
+      {notification && (
+        <Notification
+          notification={notification}
+        />
+      )}
       <Switch>
         <Route path="/anecdotes/:id" exact>
           <AnecdoteView anecdotes={anecdotes} />
