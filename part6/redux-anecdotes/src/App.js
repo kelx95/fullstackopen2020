@@ -19,7 +19,7 @@ const App = () => {
       <Filter />
       <AnecdoteForm />
       <AnecdoteList />
-    </div >
+    </div>
   )
 }
 export default App

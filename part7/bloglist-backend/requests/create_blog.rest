@@ -1,0 +1,12 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtlbG1lbnR4aGVsaWxpIiwiaWQiOiI1ZjE5NTk1MjZmMTYwYTI4MDQzNmM1ZmEiLCJpYXQiOjE1OTU2ODY5Mjh9.XRtXbfSqqButvQoQAW-AMCUDTtyk2RvJ6zKmn57c-Ak
+
+{
+    "title": "this will get delted, blog post",
+    "author": "kelment",
+    "url": "no url",
+    "likes": 1
+}
+
+
