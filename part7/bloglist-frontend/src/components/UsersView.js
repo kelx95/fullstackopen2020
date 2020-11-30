@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import {
     useRouteMatch,
   } from "react-router-dom";
-import '../App.css'
 
 const UsersView = () => {
     const match = useRouteMatch('/users/:id')
