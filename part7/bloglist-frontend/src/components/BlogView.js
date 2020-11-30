@@ -18,7 +18,7 @@ const BlogView = () => {
         <div>
             <br />
             <h2>{blog.title}</h2>  
-            <a target="_blank" href={blog.url}>{blog.url}</a>
+            <a target="_blank" rel="noopener noreferrer" href={blog.url}>{blog.url}</a>
             <div>
                 <p style={{ display: 'inline' }}>{`${blog.likes} likes`}</p>
                 &nbsp;<button onClick={() => dispatch(likeBlog(blog))}>like</button>
