@@ -8,6 +8,10 @@ import Toggable from "./components/Toggable";
 import { initializeBlogs } from "./reducers/blogsReducer";
 import { logOut, loggedIn } from "./reducers/userReducer";
 import LoginForm from "./components/LoginForm";
+import {
+  Switch, Route
+} from "react-router-dom"
+import Users from './components/Users'
 
 const App = () => {
   const dispatch = useDispatch();
@@ -30,34 +34,50 @@ const App = () => {
     }
   }, [dispatch]);
 
+  const userLogged = () => <div>
+    <h1>blogs</h1>
+    {user && `${user.name} logged in `}
+    <button onClick={() => dispatch(logOut())}>logout</button>
+  </div>
+
   return (
-    <div>
-      {user === null ? (
+    <Switch>
+      <Route path="/" exact>
         <div>
-          <h2>Log in to application</h2>
-          <Notification />
-          <LoginForm />
+          {(user === null) ? (
+            <div>
+              <h2>Log in to application</h2>
+              <Notification />
+              <LoginForm />
+            </div>
+          ) : (
+            <div>
+              <Notification />
+              {userLogged()}
+              <br />
+              <br />
+              <Toggable buttonLabel="create new" ref={blogFormRef}>
+                <BlogForm hideForm={hideForm} />
+              </Toggable>
+              <br />
+              <div className="blogs-section">
+                {blogs.map((blog) => (
+                  <Blog key={blog.id} blog={blog} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-      ) : (
-        <div>
-          <h2>blogs</h2>
-          <Notification />
-          {`${user.name} logged in `}
-          <button onClick={() => dispatch(logOut())}>logout</button>
-          <br />
-          <br />
-          <Toggable buttonLabel="create new" ref={blogFormRef}>
-            <BlogForm hideForm={hideForm} />
-          </Toggable>
-          <br />
-          <div className="blogs-section">
-            {blogs.map((blog) => (
-              <Blog key={blog.id} blog={blog} />
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
+      </Route>
+      <Route path="/users" exact>
+      <div>
+        {userLogged()}
+        <Users />
+      </div> 
+      </Route>
+      <Route path="/test" exact>
+      </Route>
+    </Switch>
   );
 };
 
