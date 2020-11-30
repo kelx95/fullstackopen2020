@@ -23,8 +23,14 @@ const initializeUsers = () => {
 const usersReducer = (state = [], action) => {
     switch (action.type) {
         case 'INITIALIZE_USERS':
-            console.log('users reducer state', [...state, ...action.data])
             return [...state, ...action.data]
+        case 'NEW_BLOG':
+            const newState = [...state]
+            const userFound = newState.find(user => user.id === action.data.user)
+            userFound.blogs.push(action.data)
+            return newState
+        case 'LOGOUT':
+            return state = []
         default:
             return state
     }

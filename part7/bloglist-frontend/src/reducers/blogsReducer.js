@@ -86,6 +86,8 @@ const blogsReducer = (state = [], action) => {
             return [
                 ...state
             ].filter(blog => blog.id !== action.data)
+        case 'LOGOUT':
+            return state = []
         default:
             return state
     }

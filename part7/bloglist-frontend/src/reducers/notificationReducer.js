@@ -42,6 +42,8 @@ const notificationReducer = ( state= initialState, action) => {
             }
         case 'REMOVE_NOTIFICATION':
             return state = initialState
+            case 'LOGOUT':
+                return state = initialState
         default:
             return state
     }

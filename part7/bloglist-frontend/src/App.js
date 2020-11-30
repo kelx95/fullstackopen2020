@@ -6,12 +6,14 @@ import BlogForm from "./components/BlogForm";
 import Toggable from "./components/Toggable";
 
 import { initializeBlogs } from "./reducers/blogsReducer";
+import { initializeUsers } from "./reducers/usersReducer";
 import { logOut, loggedIn } from "./reducers/userReducer";
 import LoginForm from "./components/LoginForm";
 import {
   Switch, Route
 } from "react-router-dom"
 import Users from './components/Users'
+import UserView from './components/UsersView'
 
 const App = () => {
   const dispatch = useDispatch();
@@ -24,8 +26,11 @@ const App = () => {
   };
 
   useEffect(() => {
-    dispatch(initializeBlogs());
-  }, [dispatch]);
+    if(user){
+      dispatch(initializeBlogs());
+      dispatch(initializeUsers());
+    }
+  }, [dispatch, user]);
 
   useEffect(() => {
     if (localStorage.getItem("user")) {
@@ -75,7 +80,8 @@ const App = () => {
         <Users />
       </div> 
       </Route>
-      <Route path="/test" exact>
+      <Route path="/users/:id" exact>
+        <UserView />
       </Route>
     </Switch>
   );
