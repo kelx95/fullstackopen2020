@@ -77,7 +77,10 @@ const App = () => {
           <UserView />
         </Route>
         <Route path="/blogs/:id" exact>
+        <div>
+          <Notification />
           <BlogView />
+        </div>  
         </Route>
       </Switch>
     </div>

@@ -29,7 +29,7 @@ const createNewBlog = async (newBlog) => {
 }
 
 const addComment = async (comment, blogId) => {
-  const response = await axios.post(`${baseUrl}/${blogId}/comments`, {comment}, configFunc())
+  const response = await axios.post(`${baseUrl}/${blogId}/comments`, comment, configFunc())
   return response.data
 }
 

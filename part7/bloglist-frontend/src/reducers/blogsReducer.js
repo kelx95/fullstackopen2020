@@ -35,6 +35,25 @@ const addNewBlog = (content) => {
     }
 }
 
+const addComment = (content, blogId) => {
+    return async dispatch => {
+        try {
+            const comment = {
+                content
+            }
+            const returnedBlog = await blogService.addComment(comment, blogId)
+            dispatch({
+                type: 'NEW_COMMENT',
+                data: returnedBlog
+            })
+            dispatch(setNotification(` a new comment added to blog ${returnedBlog.title}`, 10 ))  
+        } catch (error) {
+            dispatch(setNotification(`somithing went bad`, 10, 'error' ))  
+            
+        }
+    }
+}
+
 const likeBlog = (blog) => {
     return async dispatch => {
         try {
@@ -86,6 +105,10 @@ const blogsReducer = (state = [], action) => {
             return [
                 ...state
             ].filter(blog => blog.id !== action.data)
+        case 'NEW_COMMENT':
+            const blogsCommented = [...state]
+                .map(blog => blog.id !== action.data.id ? blog : action.data)
+                return sortByLikes(blogsCommented)
         case 'LOGOUT':
             return state = []
         default:
@@ -98,5 +121,6 @@ export {
     initializeBlogs,
     addNewBlog,
     likeBlog,
-    deleteBlog
+    deleteBlog,
+    addComment
 }
