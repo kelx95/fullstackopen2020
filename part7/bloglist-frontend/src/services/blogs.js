@@ -27,6 +27,12 @@ const createNewBlog = async (newBlog) => {
   const response = await axios.post(baseUrl, newBlog, configFunc())
   return response.data
 }
+
+const addComment = async (comment, blogId) => {
+  const response = await axios.post(`${baseUrl}/${blogId}/comments`, {comment}, configFunc())
+  return response.data
+}
+
 const updateLikes = async (updateBlog) => {
   const updatedBlog = {
     ...updateBlog,
@@ -46,4 +52,4 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
-export default { getAll, login, createNewBlog, updateLikes, deleteBlog }
+export default { getAll, login, createNewBlog, updateLikes, deleteBlog, addComment }

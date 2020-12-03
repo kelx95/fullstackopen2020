@@ -1,1 +1,36 @@
-GET http://localhost:3001/api/blogs
+GET http://localhost:3001/api/blogs/
+
+# [{
+# "likes":32,
+# "title":"udpated by kelment xhelili#11122",
+# "author":"kelmend",
+# "url":"wwww.google.com",
+# "user":{
+#     "username":"kelmentxhelili",
+#     "name":"Kelment Xhelili",
+#     "id":"5f205483bbf8b516547599af"},
+#     "comments":[],
+#     "id":"5f2054fabbf8b516547599b0"},
+#     {
+#     "likes":7,
+#     "title":"Java Ternary Operator examples mykong",
+#     "author":"Matti Luukkainen",
+#     "url":"no url",
+#     "user":{
+#         "username":"kelmentxhelili",
+#         "name":"Kelment Xhelili",
+#         "id":"5f205483bbf8b516547599af"},
+#         "comments":[],
+#         "id":"5f20552fbbf8b516547599b1"},
+#         {
+#             "likes":0,
+#             "title":"hiii",
+#             "author":"hiiii",
+#             "url":"hiiii",
+#             "user":{
+#                 "username":"kelmentxhelili",
+#                 "name":"Kelment Xhelili",
+#                 "id":"5f205483bbf8b516547599af"},
+#                 "comments":[],
+#                 "id":"5fc0f4bc14e61653e0239a5e"},
+#                 {"likes":0,"title":"hello","author":"hello","url":"helloooo","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"comments":[],"id":"5fc0f5c514e61653e0239a5f"},{"likes":0,"title":"newWorld","author":"noAuthorName","url":"www.google.com","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"comments":[],"id":"5fc0f5dd14e61653e0239a60"},{"likes":0,"title":"asdfa","author":"sdfsfd","url":"sdfsdfsdf","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"comments":[],"id":"5fc0f64a14e61653e0239a61"},{"likes":0,"title":"sadfsaf","author":"sdfsa","url":"`sdfsdf","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"comments":[],"id":"5fc1722490fb2c1340ed5d70"},{"likes":0,"title":"sdfds","author":"sfsdf","url":"sdfsdf","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"comments":[],"id":"5fc1735490fb2c1340ed5d71"},{"likes":0,"title":"adfas","author":"sdfsa","url":"sdfsdf","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"comments":[],"id":"5fc1747990fb2c1340ed5d72"},{"likes":8,"title":"asadfdas","author":"sdfsadf","url":"adfasfa","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"comments":[],"id":"5fc3dba04118ec4c784073e2"},{"likes":0,"title":"hello","author":"hello","url":"helloo","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"comments":[],"id":"5fc429ecf0880e0184365d69"},{"likes":0,"title":"newnew","author":"newnew","url":"newnew","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"comments":[],"id":"5fc53461c4fe8739309b6416"},{"likes":0,"title":"26","author":"26","url":"26","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"comments":[],"id":"5fc53485c4fe8739309b6417"},{"likes":0,"title":"thisisnew","author":"thisisnew","url":"thisisnew","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"comments":[],"id":"5fc534b5c4fe8739309b6418"},{"likes":0,"title":"new link","author":"new link","url":"www.google.com","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"comments":[],"id":"5fc55086c4fe8739309b641a"},{"likes":1,"comments":[],"title":"this will get delted, blog post","author":"kelment","url":"no url","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"id":"5fc56bb044ffce43300096f2"},{"likes":1,"comments":[],"title":"this will get delted, blog post","author":"kelment","url":"no url","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"id":"5fc56bc244ffce43300096f3"},{"likes":1,"comments":[],"title":"this will get delted, blog post","author":"kelment","url":"no url","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"id":"5fc56d63089dc145e4ba8357"},{"likes":1,"comments":[],"title":"this sdfsdfdsfsd get delted, blog post","author":"kelment","url":"no url","user":{"username":"kelmentxhelili","name":"Kelment Xhelili","id":"5f205483bbf8b516547599af"},"id":"5fc56da1537fdf2910514d66"}]

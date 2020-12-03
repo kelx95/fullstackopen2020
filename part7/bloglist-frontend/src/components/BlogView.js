@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
 import { likeBlog } from '../reducers/blogsReducer'
 
+
 const BlogView = () => {
     const dispatch = useDispatch()
     const match = useRouteMatch('/blogs/:id')
@@ -17,13 +18,21 @@ const BlogView = () => {
     return (
         <div>
             <br />
-            <h2>{blog.title}</h2>  
+            <h2>{blog.title}</h2>
+            <br /> 
             <a target="_blank" rel="noopener noreferrer" href={blog.url}>{blog.url}</a>
             <div>
                 <p style={{ display: 'inline' }}>{`${blog.likes} likes`}</p>
                 &nbsp;<button onClick={() => dispatch(likeBlog(blog))}>like</button>
             </div>
             <p>{`added by ${blog.author}`}</p>
+            <h3>comments</h3>
+            <ul>
+                {
+                    blog.comments.map(comment => <li key={comment._id}>{comment.content}</li>)
+                }
+            </ul>
+    
         </div>
     )
 }

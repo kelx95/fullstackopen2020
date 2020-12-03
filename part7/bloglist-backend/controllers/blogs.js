@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 
 blogRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+  //const blogs = await Blog.find({}).populate('comments', { content: 1, blog: 1 })
   return response.json(blogs)
 })
 
@@ -30,6 +31,25 @@ blogRouter.post('/', async (request, response, next) => {
   //add the savedBlog id to the user collection
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
+  if (savedBlog) return response.status(201).json(savedBlog)
+  return response.status(400)
+})
+
+blogRouter.post('/:id/comments', async (request, response, next) => {
+  console.log('/:id/comments route here')
+  const body = request.body
+  console.log(body)
+  // eslint-disable-next-line no-undef
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  //console.log('token undecoded', decodedToken)
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  const blogFound = await Blog.findById(request.params.id)
+  console.log('Blog Found', blogFound)
+  blogFound.comments.push({ content: body.content })
+  //save blog
+  const savedBlog = await blogFound.save()
   if (savedBlog) return response.status(201).json(savedBlog)
   return response.status(400)
 })
