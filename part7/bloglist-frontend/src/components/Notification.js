@@ -1,41 +1,26 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React from "react";
+import { useSelector } from "react-redux";
+import { Alert } from "react-bootstrap";
 
 const Notificaton = () => {
-  const notification = useSelector(state => state.notification.message)
-  const notificationType = useSelector(state => state.notification.type)
-  console.log(notificationType)
-
-  const style = {
-    border: '3px solid green',
-    padding: 10,
-    borderWidth: 1
-  }
-
-  const errorStyle = {
-    border: '3px solid red',
-    padding: 10,
-    borderWidth: 1
-  }
+  const notification = useSelector((state) => state.notification.message);
+  const notificationType = useSelector((state) => state.notification.type);
 
   return (
     <div>
-      {(notification[notification.length - 1] && notificationType) ?
-        (notificationType !== "error")
-        ?
-          <div style={style}>
+      {notification[notification.length - 1] && notificationType ? (
+        notificationType !== "error" ? (
+          <Alert variant={"success"}>
             {notification[notification.length - 1]}
-          </div>
-          :
-          <div style={errorStyle}>
-          {notification[notification.length - 1]}
-      </div>
-      :
-       null 
-      }
+          </Alert>
+        ) : (
+          <Alert variant={"danger"}>
+            {notification[notification.length - 1]}
+          </Alert>
+        )
+      ) : null}
     </div>
-  )
+  );
+};
 
-}
-
-export default Notificaton
+export default Notificaton;

@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { addNewBlog } from '../reducers/blogsReducer'
 import {useField} from "../hooks/index";
+import {Form, Button } from 'react-bootstrap'
 
 const BlogForm = ( { hideForm }) => {
   const dispatch = useDispatch()
@@ -26,27 +27,25 @@ const BlogForm = ( { hideForm }) => {
   return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={handleCreateNewBlog}>
-        <div>
-          title:
-          <input
-            {...title}
-          />
-        </div>
-        <div>
-          author:
-          <input
-            {...author}
-          />
-        </div>
-        <div>
-          url:
-          <input
-            {...url}
-          />
-        </div>
-        <button id='create' type="submit">create</button>
-      </form>
+      <Form onSubmit={handleCreateNewBlog}>
+            <Form.Group>
+              <Form.Label>title:</Form.Label>
+              <Form.Control
+                {...title}
+              />
+              <Form.Label>author:</Form.Label>
+              <Form.Control
+                {...author}
+              />
+              <Form.Label>url:</Form.Label>
+              <Form.Control
+                {...url}
+              />
+              <Button id='create' variant="primary" type="submit" style={{marginTop: '10px'}}>
+              create
+              </Button>
+            </Form.Group>
+      </Form> 
     </div>
   )
 }

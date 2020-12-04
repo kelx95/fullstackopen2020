@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
 import { likeBlog } from "../reducers/blogsReducer";
 import { useField } from "../hooks/index";
-import { addComment } from "../reducers/blogsReducer"
+import { addComment } from "../reducers/blogsReducer";
+import { Card, Button, ListGroup, ListGroupItem, Form } from "react-bootstrap";
 
 const BlogView = () => {
   const dispatch = useDispatch();
@@ -16,9 +17,7 @@ const BlogView = () => {
     : null;
 
   const handleAddNewComment = (event) => {
-    dispatch(
-      addComment(comment.value, blog.id)
-    );
+    dispatch(addComment(comment.value, blog.id));
     comment.onReset();
   };
 
@@ -26,26 +25,43 @@ const BlogView = () => {
 
   return (
     <div>
-      <br />
-      <h2>{blog.title}</h2>
-      <br />
-      <a target="_blank" rel="noopener noreferrer" href={blog.url}>
-        {blog.url}
-      </a>
-      <div>
-        <p style={{ display: "inline" }}>{`${blog.likes} likes`}</p>
-        &nbsp;<button onClick={() => dispatch(likeBlog(blog))}>like</button>
-      </div>
-      <p>{`added by ${blog.author}`}</p>
-      <h3>comments</h3>
-      <input {...comment} />
-      <button onClick={() => handleAddNewComment()}>comment</button>
-      <br />
-      <ol>
-        {blog.comments.map((comment) => (
-          <li key={comment._id}>{comment.content}</li>
-        ))}
-      </ol>
+      <Card style={{ width: "100%" }} className="container">
+        <Card.Body>
+          <Card.Title>{blog.title}</Card.Title>
+          <Card.Subtitle className="mb-2 text-muted">
+            {`added by ${blog.author}`}
+          </Card.Subtitle>
+          <Card.Link target="_blank" rel="noopener noreferrer" href={blog.url}>
+            {blog.url}
+          </Card.Link>
+          <Card.Title>{`${blog.likes} likes`}</Card.Title>
+          <Button variant="primary" onClick={() => dispatch(likeBlog(blog))}>
+            Like
+          </Button>
+          <br />
+
+          <Form.Group>
+            <Form.Label style={{ marginTop: "10px" }}>
+              Add new comment
+            </Form.Label>
+            <Form.Control as="textarea" rows={3} {...comment} />
+            <Button
+              variant="primary"
+              style={{ marginTop: "5px" }}
+              onClick={() => handleAddNewComment()}
+            >
+              Add Comment
+            </Button>
+          </Form.Group>
+
+          <ListGroup className="list-group-flush">
+            <Form.Label style={{ marginTop: "10px" }}>Comments</Form.Label>
+            {blog.comments.map((comment) => (
+              <ListGroupItem key={comment._id}>{comment.content}</ListGroupItem>
+            ))}
+          </ListGroup>
+        </Card.Body>
+      </Card>
     </div>
   );
 };

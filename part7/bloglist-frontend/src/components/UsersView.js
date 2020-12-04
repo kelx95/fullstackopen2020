@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import {
     useRouteMatch,
   } from "react-router-dom";
+import { ListGroup, ListGroupItem} from 'react-bootstrap'
 
 const UsersView = () => {
     const match = useRouteMatch('/users/:id')
@@ -19,13 +20,12 @@ const UsersView = () => {
             <h1>{user.name}</h1>
            <h2>added blogs</h2>
            <br />
-           <ul>
-            {
-                user.blogs.map(blog => <li key={blog.id} style={{marginLeft: 10}} >
-                    {blog.title}    
-                </li>)
-            }
-           </ul> 
+           <ListGroup className="list-group-flush">
+            {user.blogs.map((blog) => (
+                <ListGroupItem key={blog.id}>{blog.title}</ListGroupItem>
+            ))}
+         </ListGroup>
+
         </div>
     )
 }

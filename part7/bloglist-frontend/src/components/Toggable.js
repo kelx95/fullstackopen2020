@@ -1,4 +1,5 @@
 import React, { useState, useImperativeHandle } from 'react'
+import { Button } from 'react-bootstrap'
 
 //wrapped with () to use ref
 const Toggable = React.forwardRef((props, ref) => {
@@ -25,13 +26,13 @@ const Toggable = React.forwardRef((props, ref) => {
   })
 
   return (
-    <div>
+    <div style={{marginBottom: '10px'}}>
       <div style={hidenWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <Button onClick={toggleVisibility}>{props.buttonLabel}</Button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
+        <Button onClick={toggleVisibility}>cancel</Button>
       </div>
     </div>
   )

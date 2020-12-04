@@ -12,7 +12,8 @@ import { Switch, Route, Link } from "react-router-dom";
 import Users from "./components/Users";
 import UserView from "./components/UsersView";
 import BlogView from "./components/BlogView";
-import NavBar from "./components/NavBar"
+import NavBar from "./components/NavBar";
+import { Table } from "react-bootstrap";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -39,15 +40,13 @@ const App = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <div className="container">
       <NavBar />
       <Switch>
         <Route path="/" exact>
           <div>
             {user === null ? (
               <div>
-                <h2>Log in to application</h2>
-                <Notification />
                 <LoginForm />
               </div>
             ) : (
@@ -57,13 +56,24 @@ const App = () => {
                 <Toggable buttonLabel="create new" ref={blogFormRef}>
                   <BlogForm hideForm={hideForm} />
                 </Toggable>
-                <div className="blogs-section">
-                  {blogs.map((blog) => (
-                    <Link to={`blogs/${blog.id}`} key={blog.id}>
-                      <Blog key={blog.id} blog={blog} />
-                    </Link>
-                  ))}
-                </div>
+                <Table striped>
+                  <thead>
+                    <tr>
+                      <th>Blogs</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {blogs.map((blog) => (
+                      <tr key={blog.id}>
+                        <td>
+                          <Link to={`blogs/${blog.id}`} key={blog.id}>
+                            <Blog key={blog.id} blog={blog} />
+                          </Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
               </div>
             )}
           </div>
@@ -77,10 +87,10 @@ const App = () => {
           <UserView />
         </Route>
         <Route path="/blogs/:id" exact>
-        <div>
-          <Notification />
-          <BlogView />
-        </div>  
+          <div>
+            <Notification />
+            <BlogView />
+          </div>
         </Route>
       </Switch>
     </div>
