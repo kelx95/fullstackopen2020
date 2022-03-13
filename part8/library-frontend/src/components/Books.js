@@ -12,11 +12,8 @@ const Books = (props) => {
     return <div>loading...</div>
   }
 
-
   const books = result.data.allBooks ?? []
-
-  console.log(books)
-
+  
   return (
     <div>
       <h2>books</h2>
