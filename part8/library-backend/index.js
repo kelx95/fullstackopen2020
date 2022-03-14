@@ -170,10 +170,8 @@ const resolvers = {
     editAuthor: (root, args) => {
       if (args.name && args.setBornTo) {
         const author = authors.find((author) => author.name === args.name);
-        console.log("foundAuthor", author)
         if (author) {
           const updatedAuthor = { ...author, born: args.setBornTo };
-          console.log("updated author", updatedAuthor)
           if (updatedAuthor) {
             authors = authors.map((author) => {
               if (author.id === updatedAuthor.id) {
