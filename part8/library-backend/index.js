@@ -151,16 +151,16 @@ const resolvers = {
           book.genres = genres;
         }
         try {
-          const { title, author, published, genres, _id } = await book
-            .save()
-            .populate("author", { name: 1 });
-          return {
+          const savedBook = await book.save();
+          const { title, author, published, genres, _id } = await Book.findById(savedBook._id).populate("author", { name: 1 });
+          const newBook = {
             title,
             author: author?.name,
             published,
             genres,
             id: _id,
-          };
+          }
+          return newBook
         } catch (error) {
           throw new UserInputError(error.message, {
             invalidArgs: args,
@@ -185,14 +185,18 @@ const resolvers = {
       if (args.title) {
         const author = await Author.findOne({ name: args.author });
         if (author) {
-          await createBook(args.title, args.published, author._id, args.genres);
+          return await createBook(args.title, args.published, author._id, args.genres);
         } else {
           const author = await createAuthor(args.author);
-          await createBook(args.title, args.published, author._id, args.genres);
+          return await createBook(args.title, args.published, author._id, args.genres);
         }
       }
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
+      const currentUser = context.currentUser;
+      if (!currentUser) {
+        throw new AuthenticationError("not authenticated");
+      }
       if (args.name && args.setBornTo) {
         const author = await Author.findOne({ name: args.name });
         if (author) {
@@ -209,7 +213,10 @@ const resolvers = {
       }
     },
     createUser: async (root, args) => {
-      const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre });
+      const user = new User({
+        username: args.username,
+        favoriteGenre: args.favoriteGenre,
+      });
       try {
         await user.save();
       } catch (error) {

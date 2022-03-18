@@ -1,18 +1,16 @@
-import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
+import { useQuery } from "@apollo/client";
+import { ALL_BOOKS } from "../queries";
 
 const Books = (props) => {
-  const { loading, data } = useQuery(ALL_BOOKS)
+  const { loading, data } = useQuery(ALL_BOOKS);
 
   if (!props.show) {
-    return null
+    return null;
   }
 
-  if(loading) {
-    return <div>loading...</div>
+  if (loading) {
+    return <div>loading...</div>;
   }
-
-  const books = data?.allBooks ?? []
 
   return (
     <div>
@@ -24,7 +22,7 @@ const Books = (props) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map((a) => (
+          {data?.allBooks?.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author}</td>
@@ -34,7 +32,7 @@ const Books = (props) => {
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default Books
+export default Books;

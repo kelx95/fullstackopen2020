@@ -34,16 +34,18 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <EditAuthorBirth
-        authors={
-          authors?.length > 0
-            ? authors.map((a) => ({
-                value: a.name,
-                label: a.name,
-              }))
-            : []
-        }
-      />
+      {props?.token && (
+        <EditAuthorBirth
+          authors={
+            authors?.length > 0
+              ? authors?.map((a) => ({
+                  value: a.name,
+                  label: a.name,
+                }))
+              : []
+          }
+        />
+      )}
     </div>
   );
 };
