@@ -123,6 +123,7 @@ const resolvers = {
       }
     },
     allAuthors: async () => await Author.find({}),
+    me: (root, args, context) => context.currentUser
   },
   Author: {
     bookCount: async (root) => {
