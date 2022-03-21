@@ -1,15 +1,18 @@
 import { useQuery } from "@apollo/client";
 import { ALL_BOOKS, LOGGED_USER } from "../queries";
 
-const RecommendBooks = ({ show }) => {
-  const user = useQuery(LOGGED_USER);
-  const { loading, data } = useQuery(ALL_BOOKS);
+const RecommendBooks = ({ token }) => {
+  const user = useQuery(LOGGED_USER, {
+    skip: !token,
+  });
 
-  if (!show) {
-    return null;
-  }
-
-  if (loading) {
+  const { loading, data } = useQuery(ALL_BOOKS, {
+    variables: {
+      genre: user?.data?.me?.favoriteGenre,
+    },
+  });
+  
+  if (loading || user?.loading || !user?.data?.me) {
     return <div>loading...</div>;
   }
 
@@ -29,17 +32,13 @@ const RecommendBooks = ({ show }) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {data?.allBooks
-            .filter((book) =>
-              book?.genres?.includes(user?.data?.me?.favoriteGenre)
-            )
-            .map(({ title, author, published }) => (
-              <tr key={title}>
-                <td>{title}</td>
-                <td>{author}</td>
-                <td>{published}</td>
-              </tr>
-            ))}
+          {data?.allBooks.map(({ title, author, published }) => (
+            <tr key={title}>
+              <td>{title}</td>
+              <td>{author}</td>
+              <td>{published}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
@@ -15,8 +15,32 @@ const App = () => {
     setToken(null);
     localStorage.clear();
     client.resetStore();
+    if (page === "add" || page === "recommend") {
+      setPage("authors");
+    }
   };
 
+  useEffect(() => {
+    const tokenFromLocalStorage = localStorage.getItem("library-user-token");
+    if (tokenFromLocalStorage) {
+      setToken(tokenFromLocalStorage);
+    }
+  }, []);
+
+  const showPage = () => {
+    switch (page) {
+      case "authors":
+        return <Authors token={token} />;
+      case "books":
+        return <Books />;
+      case "add":
+        return <NewBook />;
+      case "recommend":
+        return <RecommendBooks token={token} />;
+      default:
+        break;
+    }
+  };
   return (
     <div>
       <div>
@@ -35,10 +59,7 @@ const App = () => {
           </>
         )}
       </div>
-      <Authors show={page === "authors"} token={token}/>
-      <Books show={page === "books"} />
-      <NewBook show={page === "add"} />
-      <RecommendBooks show={page === "recommend"} />
+      {showPage()}
     </div>
   );
 };

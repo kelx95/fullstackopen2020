@@ -23,10 +23,7 @@ const LoginForm = ({ setToken, show }) => {
     login({ variables: { username, password } });
   };
 
-
-  if (!show) {
-    return null
-  }
+  if(!show) return null;
 
   return (
     <div>

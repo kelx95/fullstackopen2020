@@ -2,18 +2,12 @@ import { useQuery } from "@apollo/client";
 import { ALL_AUTHORS } from "../queries";
 import EditAuthorBirth from "./EditAuthorBirth";
 
-const Authors = (props) => {
+const Authors = ({ token }) => {
   const { loading, data } = useQuery(ALL_AUTHORS);
-
-  if (!props.show) {
-    return null;
-  }
-
-  if (loading) {
+  
+  if (loading || !data) {
     return <div>loading....</div>;
   }
-
-  const authors = data?.allAuthors ?? [];
 
   return (
     <div>
@@ -25,8 +19,8 @@ const Authors = (props) => {
             <th>born</th>
             <th>books</th>
           </tr>
-          {authors.map((a) => (
-            <tr key={a.name}>
+          {data?.allAuthors?.map((a) => (
+            <tr key={a.id}>
               <td>{a.name}</td>
               <td>{a.born}</td>
               <td>{a.bookCount}</td>
@@ -34,16 +28,12 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      {props?.token && (
+      {token && (
         <EditAuthorBirth
-          authors={
-            authors?.length > 0
-              ? authors?.map((a) => ({
-                  value: a.name,
-                  label: a.name,
-                }))
-              : []
-          }
+          authors={data?.allAuthors?.map((a) => ({
+            value: a.name,
+            label: a.name,
+          }))}
         />
       )}
     </div>

@@ -85,10 +85,14 @@ const resolvers = {
           }));
         }
       } else if (!args.author && args.genre) {
-        const books = await Book.find({
-          genres: { $in: [args.genre] },
-        }).populate("author", { name: 1 });
-
+        let books = null;
+        if(args.genre === "all") {
+          books = await Book.find({}).populate("author", { name: 1 });
+        } else {
+          books = await Book.find({
+            genres: { $in: [args.genre] },
+          }).populate("author", { name: 1 });
+        }
         return books.map((book) => ({
           title: book.title,
           author: book.author.name,
