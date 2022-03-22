@@ -69,17 +69,24 @@ const resolvers = {
         }));
       }
     },
-    allAuthors: async () => await Author.find({}),
-    me: (root, args, context) => context.currentUser,
-  },
-  Author: {
-    bookCount: async (root) => {
-      const books = await Book.find({}).populate("author", { name: 1 });
-      const bookCount = books.filter(
-        (book) => book.author.name === root.name
-      ).length;
-      return bookCount;
+    allAuthors: async () => {
+      const authors = await Author.find({}).populate("books", {
+        _id: 1,
+        title: 1,
+        published: 1,
+        author: 1,
+        genres: 1,
+      });
+      const mappedAuthors = authors.map((author) => ({
+        id: author._id,
+        name: author.name,
+        born: author?.born ?? null,
+        bookCount: author?.books?.length ?? 0,
+        books: author?.books,
+      }));
+      return mappedAuthors;
     },
+    me: (root, args, context) => context.currentUser,
   },
   Mutation: {
     addBook: async (root, args, context) => {
@@ -90,7 +97,7 @@ const resolvers = {
       const createBook = async (title, published, author, genres) => {
         const book = new Book({
           title: title,
-          author: author,
+          author: author._id,
         });
         if (published) {
           book.published = published;
@@ -99,10 +106,9 @@ const resolvers = {
           book.genres = genres;
         }
         try {
-          const savedBook = await book.save();
-          const { title, author, published, genres, _id } = await Book.findById(
-            savedBook._id
-          ).populate("author", { name: 1 });
+          const { title, published, genres, _id } = await book.save();
+          author.books = author.books.concat(_id);
+          await author.save();
           const newBook = {
             title,
             author: author?.name,
@@ -139,7 +145,7 @@ const resolvers = {
           return await createBook(
             args.title,
             args.published,
-            author._id,
+            author,
             args.genres
           );
         } else {
@@ -147,7 +153,7 @@ const resolvers = {
           return await createBook(
             args.title,
             args.published,
-            author._id,
+            author,
             args.genres
           );
         }
