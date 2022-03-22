@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
+const { Schema } = mongoose;
+mongoose.Promise = global.Promise;
 
-const schema = new mongoose.Schema({
+const userSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -12,4 +14,4 @@ const schema = new mongoose.Schema({
   }
 })
 
-module.exports = mongoose.model('User', schema)
+module.exports = mongoose.models.User || mongoose.model('User', userSchema)

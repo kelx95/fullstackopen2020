@@ -1,6 +1,46 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { CREATE_BOOK, ALL_BOOKS, ALL_AUTHORS } from "../queries";
+import { CREATE_BOOK, ALL_BOOKS } from "../queries";
+
+export const updateCacheAllBooksQuery = (cache, addedBook) => {
+  const uniqByName = (a) => {
+    let seen = new Set();
+    return a.filter((item) => {
+      let k = item.title;
+      return seen.has(k) ? false : seen.add(k);
+    });
+  };
+  cache.updateQuery(
+    {
+      query: ALL_BOOKS,
+      variables: {
+        genre: "all",
+      },
+    },
+    ({ allBooks }) => {
+      return {
+        allBooks: uniqByName(allBooks.concat(addedBook)),
+      };
+    }
+  );
+  if (addedBook?.genres?.length > 0) {
+    for (const genre of addedBook.genres) {
+      cache.updateQuery(
+        {
+          query: ALL_BOOKS,
+          variables: {
+            genre: genre,
+          },
+        },
+        ({ allBooks }) => {
+          return {
+            allBooks: uniqByName(allBooks.concat(addedBook)),
+          };
+        }
+      );
+    }
+  }
+};
 
 const NewBook = () => {
   const [title, setTitle] = useState("");
@@ -13,45 +53,15 @@ const NewBook = () => {
       console.log(error);
     },
     update: (cache, response) => {
-      cache.updateQuery(
-        {
-          query: ALL_BOOKS,
-          variables: {
-            genre: "all",
-          },
-        },
-        ({ allBooks }) => {
-          return {
-            allBooks: allBooks?.concat(response.data.addBook),
-          };
-        }
-      );
-      if (response?.data?.addBook?.genres?.length > 0) {
-        for (const genre of response?.data?.addBook?.genres) {
-          cache.updateQuery(
-            {
-              query: ALL_BOOKS,
-              variables: {
-                genre: genre,
-              },
-            },
-            ({ allBooks }) => {
-              return {
-                allBooks: allBooks?.concat(response.data.addBook),
-              };
-            }
-          );
-        }
-      }
+      updateCacheAllBooksQuery(cache, response.data.addBook);
     },
-    refetchQueries: [{ query: ALL_AUTHORS }],
   });
 
   const submit = async (event) => {
     event.preventDefault();
 
     createBook({
-      variables: { title, author, published: parseInt(published, 10), genres },
+      variables: { title, author, published: parseInt(published, 10), genres }
     });
 
     setTitle("");

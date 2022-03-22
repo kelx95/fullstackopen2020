@@ -1,18 +1,15 @@
 import { useQuery } from "@apollo/client";
-import { ALL_BOOKS, LOGGED_USER } from "../queries";
+import { ALL_BOOKS } from "../queries";
 
-const RecommendBooks = ({ token }) => {
-  const user = useQuery(LOGGED_USER, {
-    skip: !token,
-  });
-
-  const { loading, data } = useQuery(ALL_BOOKS, {
+const RecommendBooks = ({ user }) => {
+  const { data, loading } = useQuery(ALL_BOOKS, {
     variables: {
-      genre: user?.data?.me?.favoriteGenre,
+      genre: user?.favoriteGenre,
     },
+    skip: !user,
   });
-  
-  if (loading || user?.loading || !user?.data?.me) {
+
+  if (loading || !user) {
     return <div>loading...</div>;
   }
 
@@ -32,7 +29,7 @@ const RecommendBooks = ({ token }) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {data?.allBooks.map(({ title, author, published }) => (
+          {data?.allBooks?.map(({ title, author, published }) => (
             <tr key={title}>
               <td>{title}</td>
               <td>{author}</td>

@@ -2,9 +2,11 @@ import { useQuery } from "@apollo/client";
 import { ALL_AUTHORS } from "../queries";
 import EditAuthorBirth from "./EditAuthorBirth";
 
-const Authors = ({ token }) => {
-  const { loading, data } = useQuery(ALL_AUTHORS);
-  
+const Authors = ({ user }) => {
+  const { loading, data } = useQuery(ALL_AUTHORS, {
+    fetchPolicy: "cache-and-network"
+  });
+
   if (loading || !data) {
     return <div>loading....</div>;
   }
@@ -28,7 +30,7 @@ const Authors = ({ token }) => {
           ))}
         </tbody>
       </table>
-      {token && (
+      {user && (
         <EditAuthorBirth
           authors={data?.allAuthors?.map((a) => ({
             value: a.name,

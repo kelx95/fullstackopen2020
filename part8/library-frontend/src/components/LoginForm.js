@@ -1,29 +1,34 @@
 import { useState, useEffect } from "react";
-import { useMutation } from "@apollo/client";
-import { LOGIN } from "../queries";
+import { useMutation, useLazyQuery } from "@apollo/client";
+import { LOGIN, LOGGED_USER } from "../queries";
 
-const LoginForm = ({ setToken, show }) => {
+const LoginForm = ({ setUser, show }) => {
+  const [getUserData] = useLazyQuery(LOGGED_USER);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [login, result] = useMutation(LOGIN);
 
+  const getUser = async () => {
+    const user = await getUserData();
+    if (user?.data?.me) setUser(user.data.me);
+  };
+
   useEffect(() => {
     if (result.data) {
       const token = result.data.login.value;
-      setToken(token);
+      getUser();
       localStorage.setItem("library-user-token", token);
     }
   }, [result.data]); // eslint-disable-line
 
   const submit = async (event) => {
     event.preventDefault();
-
     login({ variables: { username, password } });
   };
 
-  if(!show) return null;
+  if (!show) return null;
 
   return (
     <div>
