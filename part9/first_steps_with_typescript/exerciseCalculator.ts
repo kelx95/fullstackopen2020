@@ -7,11 +7,6 @@ interface ReviewResult {
   target: number;
   average: number;
 }
-const ratingsOptions = [
-  "try more",
-  "not too bad but could be better",
-  "looks good",
-];
 const calculateExercises = (
   exercises: number[],
   target: number
