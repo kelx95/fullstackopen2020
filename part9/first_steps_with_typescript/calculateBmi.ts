@@ -1,3 +1,20 @@
+interface HeightAndWeight {
+  weight: number, 
+  height: number
+}
+interface Query {
+  weight?: number;
+  height?: number;
+}
+interface BmiResult {  
+  weight: number;
+  height: number;
+  bmi: string;
+}
+interface ErrorObject {
+  error: string;
+}
+
 const calculateBmi = (height: number, weight: number): string => {
   const bmiResult: number = weight / Math.pow(height / 100, 2);
   if (bmiResult < 16) {
@@ -18,9 +35,8 @@ const calculateBmi = (height: number, weight: number): string => {
     return "Obese (Class III)";
   }
 };
-//   console.log(calculateBmi(180, 74))
-export const parseAndCalculateBmi = (args: Array<string>) => {
-    console.log(args)
+
+const parseAndCalculateBmi = (args: Array<string>) => {
   if (args.length < 4) throw new Error("Not enough arguments");
   if (args.length > 4) throw new Error("Too many arguments");
   if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
@@ -32,5 +48,36 @@ export const parseAndCalculateBmi = (args: Array<string>) => {
   }
 };
 
-console.log(parseAndCalculateBmi(process.argv))
+if (process.argv.length > 2) {
+  console.log(parseAndCalculateBmi(process.argv));
+}
+
+const parseRequestQuery = (query: Query): HeightAndWeight => {
+  const weight = query.weight;
+  const height = query.height;
+  if (!weight || !height || isNaN(weight) || isNaN(height)) {
+    throw new Error("malformatted parameters");
+  }
+  return {
+    weight: Number(weight),
+    height: Number(height),
+  };
+};
+
+export const bmiCalculator = (query: Query): BmiResult | ErrorObject => {
+  try {
+    const { weight, height } = parseRequestQuery(query) as HeightAndWeight;
+    const bmi = calculateBmi(height, weight);
+    return {
+      weight,
+      height: height,
+      bmi,
+    };
+  } catch (err) {
+    const errorMessage = (err as Error).message;
+    return {
+      error: errorMessage,
+    };
+  }
+};
 
