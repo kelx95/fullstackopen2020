@@ -40,8 +40,8 @@ const parseAndCalculateBmi = (args: Array<string>) => {
   if (args.length < 4) throw new Error("Not enough arguments");
   if (args.length > 4) throw new Error("Too many arguments");
   if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
-    let height = parseFloat(args[2]);
-    let weight = parseFloat(args[3]);
+    const height = parseFloat(args[2]);
+    const weight = parseFloat(args[3]);
     return calculateBmi(height, weight);
   } else {
     throw new Error("Provided values were not numbers!");
@@ -66,7 +66,7 @@ const parseRequestQuery = (query: Query): HeightAndWeight => {
 
 export const bmiCalculator = (query: Query): BmiResult | ErrorObject => {
   try {
-    const { weight, height } = parseRequestQuery(query) as HeightAndWeight;
+    const { weight, height } = parseRequestQuery(query);
     const bmi = calculateBmi(height, weight);
     return {
       weight,

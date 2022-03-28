@@ -46,8 +46,8 @@ const calculateExercises = (
 };
 
 const parseInputCalculateExercises = (
-    targetRaw: any,
-    exercisesRaw: any[]
+    targetRaw: string,
+    exercisesRaw: string[]
   ) => {
     if (!targetRaw || exercisesRaw.length === 0) {
       throw "parameters missing";
