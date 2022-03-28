@@ -8,7 +8,7 @@
     "multiply": "ts-node multiplier.ts",
     "calculate": "ts-node calculator.ts",
     "calculateBmi": "ts-node calculateBmi.ts",
-    "exerciseCalculator": "ts-node exerciseCalculator.ts "
+    "calculateExercises": "ts-node exerciseCalculator.ts"
   },
   "author": "",
   "license": "ISC",

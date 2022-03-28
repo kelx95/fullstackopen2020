@@ -19,18 +19,21 @@ const calculateExercises = (
   );
   const average = totalHours / periodLength;
   
-  let rating = 0;
-  let ratingDescription = "";
-  if (average === target) {
-    ratingDescription = 'try more';
-    rating = 1;
-  } else if (average > 0.9 * target) {
-    ratingDescription = 'not to bad but could be better';
-    rating = 2;
+  let rating;
+  let ratingDescription;
+
+  if (average > target) {
+      rating = 3;
+      ratingDescription = 'Great work!';
+  } else if (target - average < 0.5) {
+      console.log(target - average);
+      rating = 2;
+      ratingDescription = 'not too bad but could be better';
   } else {
-    ratingDescription = "try more";
-    rating = 3;
+      rating = 1;
+      ratingDescription = 'Not bad, but you can do better';
   }
+
   return {
     periodLength,
     trainingDays,
@@ -42,5 +45,23 @@ const calculateExercises = (
   };
 };
 
-const test = calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2)
-console.log(test)
+const parseInputCalculateExercises = (
+    targetRaw: any,
+    exercisesRaw: any[]
+  ) => {
+    if (!targetRaw || exercisesRaw.length === 0) {
+      throw "parameters missing";
+    }
+    const exercises = exercisesRaw.map((e) => parseFloat(e));
+    const target = parseFloat(targetRaw);
+    if (Number.isNaN(target) || exercises.some((e) => isNaN(e))) {
+      throw "bad parameters";
+    }
+    return calculateExercises(exercises, target);
+  };
+  if (process.argv.length > 2) {
+    const [, , target, ...exercises] = process.argv;
+    console.log(parseInputCalculateExercises(target, exercises));
+  }
+
+
